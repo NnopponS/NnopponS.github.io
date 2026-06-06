@@ -218,7 +218,7 @@ function App() {
           <div className="hero-art" data-parallax="-36" data-reveal>
             <img
               src="/art/light-profile-hero.png"
-              alt="Generated light portfolio artwork with WheelSense, certificates, awards, sensors, and engineering project imagery"
+              alt="Generated light portfolio artwork using Worapon Sangsasri's portrait with WheelSense, certificates, awards, sensors, and engineering project imagery"
             />
             <div className="hero-art-card">
               <span>Flagship project</span>
