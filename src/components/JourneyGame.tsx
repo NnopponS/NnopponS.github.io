@@ -110,8 +110,8 @@ export function JourneyGame() {
           <p className="section-kicker">Mini journey</p>
           <h3>Collect the milestones, then reach launch.</h3>
           <p>
-            Move through the engineering path from early circuits to WheelSense recognition. Use arrow
-            keys or the controls.
+            Move through the engineering path from early circuits to WheelSense recognition and
+            portfolio launch.
           </p>
         </div>
         <div className="game-status" aria-live="polite">

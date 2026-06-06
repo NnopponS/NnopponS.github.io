@@ -2,13 +2,18 @@ import { lazy, Suspense, useEffect, useRef, useState } from 'react'
 import {
   ArrowRight,
   BadgeCheck,
+  BookOpen,
+  ChevronDown,
   Download,
   ExternalLink,
+  GraduationCap,
   Mail,
+  Medal,
   Play,
   RadioTower,
   ShieldCheck,
   Sparkles,
+  Trophy,
 } from 'lucide-react'
 import { CertificateGallery } from './components/CertificateGallery'
 import { GitHubMark } from './components/GitHubMark'
@@ -27,6 +32,54 @@ const JourneyScene = lazy(() =>
   import('./components/JourneyScene').then((module) => ({ default: module.JourneyScene })),
 )
 
+const proofStats = [
+  { value: 'GPA 3.72', label: 'Electrical Engineering, Thammasat University' },
+  { value: 'TOEIC 790', label: 'English proof for international study and teamwork' },
+  { value: '15 PDFs', label: 'Public certificates, awards, scores, and CV' },
+  { value: '2026', label: 'AI, invention, research, and showcase milestones' },
+]
+
+const quickValues = [
+  {
+    title: 'AI HealthTech builder',
+    text: 'WheelSense connects indoor motion tracking, caregiver workflows, and smart-home control into a working assistive-care prototype.',
+    icon: RadioTower,
+  },
+  {
+    title: 'Competition-proven',
+    text: 'Winner and award recipient across AI Ready ASEAN, I-New Gen, Best AI Awards Taiwan, LabVIEW, and embedded systems.',
+    icon: Trophy,
+  },
+  {
+    title: 'Student mentor energy',
+    text: 'Strong foundation in mathematics, physics, programming, and embedded systems, with project experience that is easy to explain to younger students.',
+    icon: GraduationCap,
+  },
+]
+
+const fullProfile = [
+  {
+    title: 'Education',
+    text: 'Fourth-year Electrical Engineering student at Thammasat University, focused on embedded systems, AI HealthTech, indoor localization, and smart environments.',
+    icon: GraduationCap,
+  },
+  {
+    title: 'Research',
+    text: 'First-author ECTI-CON 2026 work on BLE-based indoor motion tracking using machine learning and large language models.',
+    icon: BookOpen,
+  },
+  {
+    title: 'Experience',
+    text: 'CP CIXI internship award, TSE Student Welfare Line Bot, student leadership activities, TSE Open House support, and engineering project presentations.',
+    icon: Medal,
+  },
+  {
+    title: 'Tools',
+    text: 'React, Next.js, FastAPI, Python, Docker, ESP32-S3, M5StickC Plus2, MQTT, BLE RSSI, XGBoost, LabVIEW, MATLAB, and Raspberry Pi.',
+    icon: Sparkles,
+  },
+]
+
 function useReducedMotion() {
   const [reducedMotion, setReducedMotion] = useState(false)
 
@@ -44,6 +97,7 @@ function useReducedMotion() {
 function App() {
   const appRef = useRef<HTMLDivElement>(null)
   const reducedMotion = useReducedMotion()
+  const [showFullProfile, setShowFullProfile] = useState(false)
 
   useEffect(() => {
     if (reducedMotion || !appRef.current) return
@@ -67,18 +121,18 @@ function App() {
               {
                 y: 0,
                 opacity: 1,
-                duration: 0.78,
+                duration: 0.74,
                 ease: 'power3.out',
                 scrollTrigger: {
                   trigger: element,
-                  start: 'top 84%',
+                  start: 'top 86%',
                 },
               },
             )
           })
 
           gsap.utils.toArray<HTMLElement>('[data-parallax]').forEach((element) => {
-            const distance = Number(element.dataset.parallax) || -70
+            const distance = Number(element.dataset.parallax) || -56
             gsap.to(element, {
               y: distance,
               ease: 'none',
@@ -122,58 +176,142 @@ function App() {
       <main>
         <section className="hero-section" id="story">
           <div className="hero-copy" data-reveal>
-            <p className="intro-line">Engineering impact for real people.</p>
+            <div className="hero-nameplate">
+              <span>AI HealthTech</span>
+              <span>Embedded Systems</span>
+              <span>Student Portfolio</span>
+            </div>
             <h1>
-              Worapon
+              Worapon{' '}
               <span>Sangsasri</span>
             </h1>
-            <p className="hero-subtitle">AI HealthTech and Embedded Systems</p>
-            <p className="hero-body">
-              Fourth-year Electrical Engineering student at Thammasat University building assistive
-              motion sensing, caregiver intelligence, and smart environment control.
+            <p className="hero-subtitle">
+              Electrical engineering student building WheelSense, BLE motion tracking, and
+              assistive-care systems that can be tested in the real world.
             </p>
             <div className="hero-actions">
-              <a className="primary-action" href="#timeline">
+              <a className="primary-action" href="#profile-snapshot">
                 <Play size={18} aria-hidden="true" />
-                Start the journey
+                See short profile
               </a>
               <a className="secondary-action" href={wheelsenseDemoUrl} target="_blank" rel="noreferrer">
                 <ExternalLink size={18} aria-hidden="true" />
-                Open WheelSense demo
+                WheelSense demo
               </a>
             </div>
-            <a className="demo-url" href={wheelsenseDemoUrl} target="_blank" rel="noreferrer">
-              wheelsense-preview.vercel.app/login
-            </a>
-          </div>
-
-          <div className="hero-map" data-parallax="-42">
-            <Suspense fallback={<div className="journey-scene scene-fallback">Loading journey map</div>}>
-              <JourneyScene reducedMotion={reducedMotion} />
-            </Suspense>
-            <div className="map-card" data-reveal>
-              <span>Currently building</span>
-              <strong>WheelSense</strong>
-              <p>Making mobility data actionable for prevention and personalized care.</p>
-              <div className="tech-pills">
-                <span>BLE RSSI</span>
-                <span>FastAPI</span>
-                <span>Next.js</span>
-              </div>
+            <img
+              aria-hidden="true"
+              className="mobile-hero-strip"
+              src="/art/light-profile-hero.png"
+              alt=""
+            />
+            <div className="hero-proof" aria-label="Key proof points">
+              {proofStats.map((stat) => (
+                <div key={stat.value}>
+                  <strong>{stat.value}</strong>
+                  <span>{stat.label}</span>
+                </div>
+              ))}
             </div>
           </div>
 
-          <a className="next-preview" href="#timeline">
-            <span>The journey so far</span>
-            <strong>Turning curiosity into tested systems.</strong>
+          <div className="hero-art" data-parallax="-36" data-reveal>
+            <img
+              src="/art/light-profile-hero.png"
+              alt="Generated light portfolio artwork with WheelSense, certificates, awards, sensors, and engineering project imagery"
+            />
+            <div className="hero-art-card">
+              <span>Flagship project</span>
+              <strong>WheelSense</strong>
+              <p>Assistive motion sensing, caregiver intelligence, and smart-home control.</p>
+            </div>
+          </div>
+
+          <a className="next-preview" href="#profile-snapshot">
+            <span>Start with the short version</span>
+            <strong>Profile, honors, experience, and proof in one scan.</strong>
             <ArrowRight size={18} aria-hidden="true" />
           </a>
         </section>
 
+        <section className="profile-snapshot" id="profile-snapshot">
+          <div className="snapshot-copy" data-reveal>
+            <p className="section-kicker">Short profile</p>
+            <h2>Engineer, researcher, and student mentor with proof behind the story.</h2>
+            <p>
+              I build assistive technology and explain complex engineering clearly: from BLE motion
+              tracking and embedded systems to AI evaluation, presentations, and student support.
+            </p>
+            <button
+              aria-controls="full-profile"
+              aria-expanded={showFullProfile}
+              className="detail-toggle"
+              onClick={() => setShowFullProfile((value) => !value)}
+              type="button"
+            >
+              {showFullProfile ? 'Hide full profile' : 'See full profile detail'}
+              <ChevronDown size={17} aria-hidden="true" />
+            </button>
+          </div>
+
+          <div className="value-cards">
+            {quickValues.map((item) => {
+              const Icon = item.icon
+              return (
+                <article data-reveal key={item.title}>
+                  <Icon size={25} aria-hidden="true" />
+                  <h3>{item.title}</h3>
+                  <p>{item.text}</p>
+                </article>
+              )
+            })}
+          </div>
+
+          {showFullProfile ? (
+            <div className="full-profile-panel" data-reveal id="full-profile">
+              {fullProfile.map((item) => {
+                const Icon = item.icon
+                return (
+                  <article key={item.title}>
+                    <Icon size={22} aria-hidden="true" />
+                    <div>
+                      <h3>{item.title}</h3>
+                      <p>{item.text}</p>
+                    </div>
+                  </article>
+                )
+              })}
+            </div>
+          ) : null}
+        </section>
+
+        <section className="proof-poster" aria-labelledby="poster-heading">
+          <div className="poster-media" data-parallax="-32">
+            <img
+              src="/art/light-achievement-collage.png"
+              alt="Generated achievement collage with awards, certificates, wheelchair motion sensing, embedded boards, and presentation scenes"
+              loading="lazy"
+            />
+          </div>
+          <div className="poster-copy" data-reveal>
+            <p className="section-kicker">Proof poster</p>
+            <h2 id="poster-heading">Short enough to scan. Strong enough to trust.</h2>
+            <div className="poster-list">
+              <span>National and international awards</span>
+              <span>Research and working prototype evidence</span>
+              <span>Certificates, English scores, and CV archive</span>
+            </div>
+            <a href="#certificates">
+              View public certificate archive
+              <ArrowRight size={16} aria-hidden="true" />
+            </a>
+          </div>
+        </section>
+
         <section className="story-section" id="timeline">
           <div className="section-heading" data-reveal>
-            <p className="section-kicker">The journey so far</p>
-            <h2>Turning curiosity into systems that can be tested, shown, and improved.</h2>
+            <p className="section-kicker">Journey map</p>
+            <h2>One journey, five checkpoints: profile, WheelSense, research, honors, proof.</h2>
           </div>
           <div className="checkpoint-rail">
             {journeyCheckpoints.map((checkpoint) => {
@@ -190,30 +328,36 @@ function App() {
           </div>
         </section>
 
-        <section className="art-section" aria-labelledby="art-heading">
-          <img
-            src="/art/wheelsense-journey-world.png"
-            alt="Generated cinematic journey map with WheelSense motion tracking, sensor nodes, microcontrollers, certificates, and award medallions"
-            loading="lazy"
-          />
-          <div className="art-copy" data-reveal>
-            <p className="section-kicker">Generated world</p>
-            <h2 id="art-heading">A visual map for the work behind WheelSense.</h2>
+        <section className="scene-section" aria-labelledby="scene-heading">
+          <div className="scene-copy" data-reveal>
+            <p className="section-kicker">Checkpoint scene</p>
+            <h2 id="scene-heading">Each checkpoint connects the profile to the evidence behind it.</h2>
             <p>
-              This image is generated as a portfolio artwork, then the site layers real HTML
-              content, links, certificates, and interaction around it.
+              The path moves from study and sensing work into WheelSense, research, honors, and
+              public proof that visitors can inspect.
             </p>
-            <a href={wheelsenseDemoUrl} target="_blank" rel="noreferrer">
-              Open the live demo
-              <ExternalLink size={16} aria-hidden="true" />
-            </a>
+          </div>
+          <div className="scene-frame" data-reveal>
+            <Suspense fallback={<div className="journey-scene scene-fallback">Loading journey map</div>}>
+              <JourneyScene reducedMotion={reducedMotion} />
+            </Suspense>
+            <div className="map-card">
+              <span>Currently building</span>
+              <strong>WheelSense</strong>
+              <p>Making mobility data actionable for prevention and personalized care.</p>
+              <div className="tech-pills">
+                <span>BLE RSSI</span>
+                <span>FastAPI</span>
+                <span>Next.js</span>
+              </div>
+            </div>
           </div>
         </section>
 
         <section className="projects-section" id="projects">
           <div className="section-heading compact" data-reveal>
             <p className="section-kicker">Projects</p>
-            <h2>Flagship work first, supporting engineering work around it.</h2>
+            <h2>WheelSense first, with supporting engineering work around it.</h2>
           </div>
           <div className="project-showcase">
             {projectItems.map((project, index) => (
@@ -243,11 +387,11 @@ function App() {
 
         <section className="evidence-section">
           <div className="evidence-copy" data-reveal>
-            <p className="section-kicker">Research and skill map</p>
-            <h2>Evidence-backed engineering, not a decorative resume.</h2>
+            <p className="section-kicker">Skills evidence</p>
+            <h2>Skills are grouped by evidence, not decoration.</h2>
             <p>
-              The portfolio is structured as a journey because the work connects: embedded sensing,
-              AI evaluation, caregiver workflows, student leadership, and award-stage communication.
+              The site keeps the first scan short, then lets visitors inspect skills, projects,
+              awards, and documents in clear sections.
             </p>
           </div>
           <div className="skill-bento">
@@ -271,7 +415,7 @@ function App() {
         <section className="awards-section" id="awards">
           <div className="section-heading compact" data-reveal>
             <p className="section-kicker">Honors</p>
-            <h2>Recognition across AI, invention, embedded systems, and academic performance.</h2>
+            <h2>Short honor cards for fast trust, with the certificate archive below.</h2>
           </div>
           <div className="honor-grid">
             {honorItems.map((honor) => {
@@ -293,8 +437,8 @@ function App() {
 
         <section className="featured-certificates">
           <div className="section-heading compact" data-reveal>
-            <p className="section-kicker">Proof preview</p>
-            <h2>Featured certificates are visible before the full archive.</h2>
+            <p className="section-kicker">Certificate preview</p>
+            <h2>Featured proof appears before the full downloadable archive.</h2>
           </div>
           <div className="featured-strip">
             {featuredCertificates.map((certificate) => (
@@ -321,7 +465,7 @@ function App() {
         <section className="game-section" id="journey-game">
           <div className="section-heading compact" data-reveal>
             <p className="section-kicker">Playable story</p>
-            <h2>A lightweight game layer for the same engineering journey.</h2>
+            <h2>Collect the milestones in a small game about the same journey.</h2>
           </div>
           <JourneyGame />
         </section>
@@ -366,7 +510,7 @@ function App() {
             </span>
             <span>
               <Sparkles size={18} aria-hidden="true" />
-              Web story with mini-game
+              Light web story with mini-game
             </span>
           </div>
         </section>
