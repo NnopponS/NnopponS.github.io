@@ -190,6 +190,26 @@ function App() {
           </div>
         </section>
 
+        <section className="art-section" aria-labelledby="art-heading">
+          <img
+            src="/art/wheelsense-journey-world.png"
+            alt="Generated cinematic journey map with WheelSense motion tracking, sensor nodes, microcontrollers, certificates, and award medallions"
+            loading="lazy"
+          />
+          <div className="art-copy" data-reveal>
+            <p className="section-kicker">Generated world</p>
+            <h2 id="art-heading">A visual map for the work behind WheelSense.</h2>
+            <p>
+              This image is generated as a portfolio artwork, then the site layers real HTML
+              content, links, certificates, and interaction around it.
+            </p>
+            <a href={wheelsenseDemoUrl} target="_blank" rel="noreferrer">
+              Open the live demo
+              <ExternalLink size={16} aria-hidden="true" />
+            </a>
+          </div>
+        </section>
+
         <section className="projects-section" id="projects">
           <div className="section-heading compact" data-reveal>
             <p className="section-kicker">Projects</p>
