@@ -13,7 +13,10 @@ import {
   Menu,
   X,
 } from 'lucide-react'
+import { ScrollJourney } from './components/ScrollJourney'
+import { ScrollMotion } from './components/ScrollMotion'
 import './professional.css'
+import './story-motion.css'
 
 type AwardCategory = 'International' | 'Research' | 'National' | 'Academic'
 
@@ -29,7 +32,8 @@ type Award = {
 
 const navigation = [
   { label: 'About', href: '#about' },
-  { label: 'Selected work', href: '#work' },
+  { label: 'Journey', href: '#journey' },
+  { label: 'Work', href: '#work' },
   { label: 'Research', href: '#research' },
   { label: 'Experience', href: '#experience' },
   { label: 'Recognition', href: '#awards' },
@@ -293,6 +297,7 @@ export default function ProfessionalPortfolio() {
 
   return (
     <div className="portfolio">
+      <ScrollMotion />
       <a className="skip-link" href="#main">Skip to content</a>
 
       <header className="site-header">
@@ -371,7 +376,7 @@ export default function ProfessionalPortfolio() {
 
         <section className="proof-strip" aria-label="Selected academic and research achievements">
           <div className="container proof-grid">
-            <div><span className="proof-label">ACADEMIC FOUNDATION</span><strong>3.72 <small>/ 4.00</small></strong><p>B.Eng. Electrical Engineering · Thammasat University</p></div>
+            <div><span className="proof-label">ACADEMIC FOUNDATION</span><strong><span data-gpa-counter>3.72</span> <small>/ 4.00</small></strong><p>B.Eng. Electrical Engineering · Thammasat University</p></div>
             <div><span className="proof-label">PEER-REVIEWED RESEARCH</span><strong>Best Paper</strong><p>ECTI-CON 2026 · First author</p></div>
             <div><span className="proof-label">INTERNATIONAL RECOGNITION</span><strong>Gold Medal</strong><p>Shanghai International Invention & Innovation Expo 2026</p></div>
           </div>
@@ -380,13 +385,13 @@ export default function ProfessionalPortfolio() {
         <section className="section recognition-section" id="recognition">
           <div className="container">
             <div className="section-top"><span className="section-index">01 / SELECTED RECOGNITION</span><span>CHINA · SINGAPORE · TAIWAN</span></div>
-            <div className="section-heading-row">
+            <div className="section-heading-row motion-reveal">
               <h2>Recognized beyond<br /><em>the laboratory.</em></h2>
               <p>My work has been evaluated in international research, invention and innovation settings, with an emphasis on practical outcomes.</p>
             </div>
             <div className="recognition-grid">
               {highlights.map((entry, index) => (
-                <article className="recognition-card" key={entry.locale}>
+                <article className="recognition-card motion-reveal" key={entry.locale}>
                   <div className="recognition-top"><span>{entry.locale}</span><span>0{index + 1}</span></div>
                   <div className="recognition-body"><h3>{entry.headline}</h3><p className="recognition-title">{entry.title}</p><p className="recognition-description">{entry.description}</p></div>
                 </article>
@@ -402,7 +407,7 @@ export default function ProfessionalPortfolio() {
               <div className="small-rule" />
               <p>ENGINEER<br />RESEARCHER<br />PROBLEM SOLVER</p>
             </div>
-            <div className="about-content">
+            <div className="about-content motion-reveal">
               <h2>I work where sensing, intelligence and real-world needs meet.</h2>
               <p className="lead-paragraph">
                 My background spans electrical engineering, embedded systems, machine learning
@@ -424,14 +429,16 @@ export default function ProfessionalPortfolio() {
           </div>
         </section>
 
+        <ScrollJourney />
+
         <section className="section work-section" id="work">
           <div className="container">
-            <div className="section-top"><span className="section-index">03 / SELECTED WORK</span><span>APPLIED ENGINEERING & RESEARCH</span></div>
-            <div className="section-heading-row">
+            <div className="section-top"><span className="section-index">04 / SELECTED WORK</span><span>APPLIED ENGINEERING & RESEARCH</span></div>
+            <div className="section-heading-row motion-reveal">
               <h2>Built to be used,<br /><em>not just presented.</em></h2>
               <p>From wearable hardware and firmware to AI models, dashboards and care-system integration.</p>
             </div>
-            <article className="case-study">
+            <article className="case-study motion-reveal">
               <div className="case-copy">
                 <span className="case-number">01 / FLAGSHIP PROJECT</span>
                 <span className="case-line" />
@@ -463,7 +470,7 @@ export default function ProfessionalPortfolio() {
             </article>
             <div className="projects-grid">
               {projects.map((project) => (
-                <article className="project-tile" key={project.name}>
+                <article className="project-tile motion-reveal" key={project.name}>
                   <div className="project-tile-top"><span>{project.number} / {project.area}</span><ArrowUpRight size={19} aria-hidden="true" /></div>
                   <div className="project-tile-body">
                     <h3>{project.name}</h3>
@@ -479,8 +486,8 @@ export default function ProfessionalPortfolio() {
 
         <section className="section research-section" id="research">
           <div className="container research-grid">
-            <div className="research-label"><span className="section-index light">04 / RESEARCH</span><BookOpenText size={48} strokeWidth={1.2} aria-hidden="true" /></div>
-            <div className="research-content">
+            <div className="research-label"><span className="section-index light">05 / RESEARCH</span><BookOpenText size={48} strokeWidth={1.2} aria-hidden="true" /></div>
+            <div className="research-content motion-reveal">
               <p className="research-caption">FIRST-AUTHOR PUBLICATION · BEST PAPER AWARD</p>
               <h2>Comparative Performance Evaluation of BLE-Based Indoor Motion Tracking Using Machine Learning and Large Language Models</h2>
               <p>
@@ -496,14 +503,15 @@ export default function ProfessionalPortfolio() {
 
         <section className="section experience-section" id="experience">
           <div className="container">
-            <div className="section-top"><span className="section-index">05 / EXPERIENCE</span><span>INDUSTRY & ACADEMIA</span></div>
-            <div className="section-heading-row">
+            <div className="section-top"><span className="section-index">06 / EXPERIENCE</span><span>INDUSTRY & ACADEMIA</span></div>
+            <div className="section-heading-row motion-reveal">
               <h2>Engineering across<br /><em>different environments.</em></h2>
               <p>Selected roles that shaped how I research, build and communicate engineering systems.</p>
             </div>
             <div className="experience-list">
+              <span className="experience-rail" aria-hidden="true"><span className="experience-rail-fill" /></span>
               {experience.map((entry, index) => (
-                <article className="experience-row" key={entry.role + entry.company}>
+                <article className="experience-row motion-reveal" key={entry.role + entry.company}>
                   <div className="experience-side"><span>{entry.period}</span><span className="experience-number">{String(index + 1).padStart(2, '0')}</span></div>
                   <div className="experience-main"><h3>{entry.role}</h3><p className="experience-company">{entry.company}</p><p className="experience-description">{entry.detail}</p></div>
                   <div className="experience-context">{entry.context}</div>
@@ -515,8 +523,8 @@ export default function ProfessionalPortfolio() {
 
         <section className="section awards-section" id="awards">
           <div className="container">
-            <div className="section-top"><span className="section-index">06 / AWARDS & HONORS</span><span>2025 — 2026</span></div>
-            <div className="section-heading-row">
+            <div className="section-top"><span className="section-index">07 / AWARDS & HONORS</span><span>2025 — 2026</span></div>
+            <div className="section-heading-row motion-reveal">
               <h2>Selected honors,<br /><em>documented results.</em></h2>
               <p>A record of recognition from research, international innovation, embedded systems and engineering competitions.</p>
             </div>
@@ -529,9 +537,9 @@ export default function ProfessionalPortfolio() {
                 </button>
               ))}
             </div>
-            <div className="award-list">
+            <div className="award-list motion-reveal">
               {displayedAwards.map((award) => (
-                <article className="award-row" key={award.title}>
+                <article className="award-row" key={activeFilter + (showAllAwards ? "-all-" : "-short-") + award.title}>
                   <span className="award-year">{award.year}</span>
                   <div className="award-text"><h3>{award.title}</h3><p>{award.organization} · {award.location}</p></div>
                   <div className="award-outcome"><strong>{award.recognition}</strong><span>{award.category}</span></div>
@@ -550,14 +558,14 @@ export default function ProfessionalPortfolio() {
 
         <section className="section documents-section" id="documents">
           <div className="container">
-            <div className="section-top"><span className="section-index">07 / DOCUMENTATION</span><span>SELECTED PUBLIC EVIDENCE</span></div>
-            <div className="section-heading-row">
+            <div className="section-top"><span className="section-index">08 / DOCUMENTATION</span><span>SELECTED PUBLIC EVIDENCE</span></div>
+            <div className="section-heading-row motion-reveal">
               <h2>Work you can<br /><em>verify.</em></h2>
               <p>Selected award certificates and research evidence. Personal admissions records and test score reports are not displayed in this archive.</p>
             </div>
             <div className="documents-grid">
               {documents.map((item) => (
-                <ExternalAnchor className="document-card" href={item.href} key={item.title}>
+                <ExternalAnchor className="document-card motion-reveal" href={item.href} key={item.title}>
                   <div className="document-image"><img src={item.image} alt={'Certificate preview: ' + item.title} loading="lazy" /></div>
                   <div className="document-content"><h3>{item.title}</h3><p>{item.description}</p><span>VIEW CERTIFICATE <ExternalLink size={13} aria-hidden="true" /></span></div>
                 </ExternalAnchor>
@@ -572,9 +580,9 @@ export default function ProfessionalPortfolio() {
         </section>
 
         <section className="contact-section" id="contact">
-          <div className="container contact-grid">
+          <div className="container contact-grid motion-reveal">
             <div>
-              <span className="section-index light">08 / CONTACT</span>
+              <span className="section-index light">09 / CONTACT</span>
               <h2>Let's build something<br /><em>meaningful.</em></h2>
               <p>Open to conversations about graduate research, intelligent sensing, embedded AI and assistive technology.</p>
             </div>
