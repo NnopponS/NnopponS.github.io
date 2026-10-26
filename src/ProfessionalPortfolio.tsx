@@ -7,8 +7,8 @@ import {
   Download,
   ExternalLink,
   FileText,
-  Github,
-  Linkedin,
+  Code2,
+  UsersRound,
   Mail,
   Menu,
   X,
@@ -580,8 +580,8 @@ export default function ProfessionalPortfolio() {
             </div>
             <div className="contact-details">
               <a href="mailto:worapon.sangs@gmail.com"><Mail size={19} aria-hidden="true" /><span>EMAIL</span><strong>worapon.sangs@gmail.com</strong><ArrowUpRight size={18} aria-hidden="true" /></a>
-              <ExternalAnchor href="https://www.linkedin.com/in/worapon-sangsasri-0371a8376/"><Linkedin size={19} aria-hidden="true" /><span>LINKEDIN</span><strong>Professional profile</strong></ExternalAnchor>
-              <ExternalAnchor href="https://github.com/NnopponS"><Github size={19} aria-hidden="true" /><span>GITHUB</span><strong>Code & projects</strong></ExternalAnchor>
+              <ExternalAnchor href="https://www.linkedin.com/in/worapon-sangsasri-0371a8376/"><UsersRound size={19} aria-hidden="true" /><span>LINKEDIN</span><strong>Professional profile</strong></ExternalAnchor>
+              <ExternalAnchor href="https://github.com/NnopponS"><Code2 size={19} aria-hidden="true" /><span>GITHUB</span><strong>Code & projects</strong></ExternalAnchor>
               <a href="/cv.html" target="_blank" rel="noopener noreferrer"><FileText size={19} aria-hidden="true" /><span>CURRICULUM VITAE</span><strong>View academic CV</strong><ArrowUpRight size={18} aria-hidden="true" /></a>
             </div>
           </div>
