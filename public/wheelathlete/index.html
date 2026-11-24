@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WheelAthlete | Worapon Sangsasri</title>
+  <meta name="description" content="A wheelchair motion research tool with synchronized wheel-mounted IMUs and a Windows-first recording, quality-control and export workflow.">
+  <link rel="canonical" href="https://nnoppons.github.io/wheelathlete/">
+  <meta name="theme-color" content="#f5f2e9">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="WheelAthlete | Engineering Case Study">
+  <meta property="og:description" content="Synchronized IMUs, quality control, and wheelchair motion data you can inspect and export.">
+  <meta property="og:url" content="https://nnoppons.github.io/wheelathlete/">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="stylesheet" href="/wheelsense/case-study.css">
+</head>
+<body>
+  <header class="header"><div class="wrap"><a href="/#work">← Selected work</a><a class="byline" href="/">Worapon Sangsasri</a></div></header>
+  <main>
+    <section class="wrap hero" aria-labelledby="title">
+      <p class="tag">FIELD NOTE / 02</p>
+      <h1 id="title">Wheel<em>Athlete</em></h1>
+      <p class="lead">Before analyzing wheelchair motion, you have to trust the recording.</p>
+      <p class="measure">WheelAthlete synchronizes inertial sensors on the left and right wheelchair wheels. Its Windows application keeps collection separate from plotting and review, so a busy interface is not in charge of the raw data.</p>
+      <div class="actions"><a class="button" href="#workflow">Explore the workflow <span aria-hidden="true">↓</span></a><a class="link" href="https://github.com/NnopponS/WheelAthelse">Source and setup <span aria-hidden="true">↗</span></a></div>
+      <figure class="trace">
+        <p>CHANNEL L / CHANNEL R</p>
+        <svg viewBox="0 0 700 195" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Diagram illustrating how left and right wheel streams share a time axis">
+          <path class="grid-lines" d="M0 34H700M0 74H700M0 114H700M0 154H700M70 0V195M140 0V195M210 0V195M280 0V195M350 0V195M420 0V195M490 0V195M560 0V195M630 0V195"/>
+          <path d="M0 73C36 73 36 40 70 40s30 45 70 45 32-57 70-57 33 56 70 56 45-35 70-35 35 35 70 35 32-56 70-56 35 55 70 55 43-26 70-26 41 25 70 25"/>
+          <path class="second" d="M0 148c35 0 35-17 70-17s32 25 70 25 36-38 70-38 31 39 70 39 34-21 70-21 35 23 70 23 37-33 70-33 34 27 70 27 37-17 70-17 36 18 70 18"/>
+        </svg>
+        <figcaption>ILLUSTRATIVE SCHEMATIC / NOT EXPERIMENTAL DATA</figcaption>
+      </figure>
+      <dl class="info">
+        <div><dt>Collection</dt><dd>Left and right wheel IMUs</dd></div>
+        <div><dt>Review</dt><dd>Windows acquisition, diagnostics and CSV export</dd></div>
+        <div><dt>Analysis</dt><dd>Offline trajectory review using left/right data</dd></div>
+      </dl>
+    </section>
+    <section class="section wrap" id="workflow" aria-labelledby="workflow-title">
+      <p class="tag">02 / WORKFLOW</p>
+      <h2 id="workflow-title">From trial to <em>trace.</em></h2>
+      <ol class="steps">
+        <li><p class="tag">01 / RECORD</p><h3>Synchronize the sensors</h3><p>The acquisition daemon handles BLE, clock synchronization and packet sequencing. A center IMU is optional for research instrumentation.</p></li>
+        <li><p class="tag">02 / CHECK</p><h3>Inspect what was captured</h3><p>The Windows interface exposes recording quality and diagnostics, including sequence loss, so dropped packets do not go unnoticed.</p></li>
+        <li><p class="tag">03 / EXPORT</p><h3>Keep the trail inspectable</h3><p>Experiments and trials stay organized for CSV export and offline analysis. The raw recording path remains separate from the interface.</p></li>
+      </ol>
+    </section>
+    <section class="section panel" aria-labelledby="project-limits">
+      <div class="wrap">
+        <p class="tag">03 / SCOPE</p>
+        <h2 id="project-limits">What it <em>doesn’t</em> claim.</h2>
+        <p class="measure">This is research tooling for acquiring and reviewing motion data. It is separate from the WheelSense assistive-care project, and does not claim clinical validation or guaranteed Bluetooth performance across Windows setups.</p>
+        <p class="note">Use the repository documentation to run from source and verify the supported hardware and software versions for your setup.</p>
+      </div>
+    </section>
+    <section class="section wrap" aria-labelledby="source">
+      <p class="tag">04 / SOURCE</p>
+      <h2 id="source">See the <em>implementation.</em></h2>
+      <ul class="evidence">
+        <li><a href="https://github.com/NnopponS/WheelAthelse"><span><strong>WheelAthlete source and documentation</strong><small>Windows app, sensor firmware and analysis tools</small></span><span aria-hidden="true">↗</span></a></li>
+        <li><a href="https://github.com/NnopponS/WheelAthelse/blob/main/docs/ble-protocol.md"><span><strong>BLE protocol</strong><small>Sensor roles and packet format</small></span><span aria-hidden="true">↗</span></a></li>
+        <li><a href="/wheelsense/"><span><strong>WheelSense &amp; EaseAI</strong><small>Related field note about assistive-care workflows</small></span><span aria-hidden="true">→</span></a></li>
+      </ul>
+    </section>
+  </main>
+  <footer class="foot"><div class="wrap"><span>WORAPON SANGSASRI / FIELD NOTES</span><a href="/#work">Back to selected work →</a></div></footer>
+</body>
+</html>

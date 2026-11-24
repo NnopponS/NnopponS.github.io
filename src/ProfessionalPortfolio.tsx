@@ -1,613 +1,199 @@
-import { useEffect, useState } from 'react'
-import {
-  ArrowDown,
-  ArrowRight,
-  ArrowUpRight,
-  BookOpenText,
-  Download,
-  ExternalLink,
-  FileText,
-  Code2,
-  UsersRound,
-  Mail,
-  Menu,
-  X,
-} from 'lucide-react'
-import { ScrollJourney } from './components/ScrollJourney'
-import { ScrollMotion } from './components/ScrollMotion'
+import { useEffect, useRef, useState } from 'react'
+import { ArrowDown, ArrowRight, ArrowUpRight, Menu, X } from 'lucide-react'
+import { awardGroups, awards, chapters, experience, github, linkedIn, paper, photos, recap, type AwardGroup } from './portfolio-content'
 import './professional.css'
-import './story-motion.css'
 
-type AwardCategory = 'International' | 'Research' | 'National' | 'Academic'
+type Photo = { src: string; alt: string; caption: string; where: string; width: number; height: number }
+const nav = [['Journey', '#journey'], ['Work', '#work'], ['Research', '#research'], ['Honors', '#awards']] as const
+const smallImages = ['singapore', 'taiwan-booth', 'innoserve']
 
-type Award = {
-  title: string
-  recognition: string
-  organization: string
-  location: string
-  year: string
-  category: AwardCategory
-  evidence?: string
+function PhotoImage({ photo, eager = false }: { photo: Photo; eager?: boolean }) {
+  const base = '/fieldnotes/' + photo.src
+  return <img src={base + '.webp'}
+    srcSet={smallImages.includes(photo.src) ? base + '-small.webp 640w, ' + base + '.webp ' + photo.width + 'w' : undefined}
+    sizes="(max-width: 760px) 94vw, 55vw" width={photo.width} height={photo.height}
+    alt={photo.alt} loading={eager ? 'eager' : 'lazy'} fetchPriority={eager ? 'high' : undefined} decoding="async" />
 }
 
-const navigation = [
-  { label: 'About', href: '#about' },
-  { label: 'Journey', href: '#journey' },
-  { label: 'Work', href: '#work' },
-  { label: 'Research', href: '#research' },
-  { label: 'Experience', href: '#experience' },
-  { label: 'Recognition', href: '#awards' },
-]
+function Figure({ photo, className = '', eager = false }: { photo: Photo; className?: string; eager?: boolean }) {
+  return <figure className={'photo ' + className}>
+    <PhotoImage photo={photo} eager={eager} />
+    <figcaption><span>{photo.caption}</span><span>{photo.where}</span></figcaption>
+  </figure>
+}
 
-const highlights = [
-  {
-    locale: 'CHINA · 2026',
-    headline: 'Gold Medal & Special Award',
-    title: '9th China (Shanghai) International Invention & Innovation Expo',
-    description: 'International recognition for WheelSense, an assistive sensing and intelligent-care platform.',
-  },
-  {
-    locale: 'SINGAPORE · 2026',
-    headline: 'Thailand National Winner',
-    title: 'AI Ready ASEAN Youth Challenge',
-    description: 'Represented Thailand at the regional showcase, presenting WheelSense and its applications in care.',
-  },
-  {
-    locale: 'TAIWAN · 2026',
-    headline: 'Honorable Award',
-    title: 'Best AI Awards — AI Student Division',
-    description: 'Recognition for EaseAI, an AI-assisted sensing and care system for nursing-home environments.',
-  },
-]
+function JumpLink({ href, children, external = false, className = '' }: { href: string; children: React.ReactNode; external?: boolean; className?: string }) {
+  const Icon = external ? ArrowUpRight : ArrowRight
+  return <a href={href} className={'jump-link ' + className}>{children}<Icon size={17} aria-hidden="true" /></a>
+}
 
-const projects = [
-  {
-    number: '02',
-    area: 'RESEARCH · MACHINE LEARNING',
-    name: 'BLE-Based Indoor Motion Tracking',
-    body: 'First-author evaluation of machine learning and large language models for BLE signal-based indoor tracking, using ESP32-S3 anchors and wearable sensor data.',
-    tags: ['BLE / RSSI', 'ESP32-S3', 'XGBoost', 'LLM evaluation'],
-    link: 'https://ieeexplore.ieee.org/document/11608653',
-    linkText: 'Read publication',
-  },
-  {
-    number: '03',
-    area: 'EDGE AI · ASSISTIVE TECHNOLOGY',
-    name: 'EaseAI — Intelligent Care',
-    body: 'Edge-AI care monitoring and smart-environment workflows designed to support caregivers and wheelchair users. Built as a working multidisciplinary prototype.',
-    tags: ['Edge AI', 'PSoC Edge E84', 'AIoT', 'Care workflows'],
-    link: '/wheelsense/#easeai',
-    linkText: 'Explore EaseAI',
-  },
-  {
-    number: '04',
-    area: 'ROBOTICS · EMBEDDED SYSTEMS',
-    name: 'Autonomous Drone Systems',
-    body: 'A national embedded-systems competition project integrating MATLAB-based flight logic, signal analysis, GPS-spoofing resilience and a monitoring interface.',
-    tags: ['MATLAB', 'Raspberry Pi 5', 'Autonomy', 'Signal processing'],
-    link: 'https://github.com/NnopponS',
-    linkText: 'View GitHub',
-  },
-]
-
-const experience = [
-  {
-    period: 'OCT 2026 — PRESENT',
-    role: 'Applications Engineer',
-    company: 'TECHSQUARE CO., LTD.',
-    context: 'Bangkok, Thailand · Full-time',
-    detail: 'Translate customer requirements into practical engineering systems, demonstrations and technical guidance, with work involving NI instrumentation and LabVIEW.',
-  },
-  {
-    period: 'APR 2026 — PRESENT',
-    role: 'Research & Development Engineer',
-    company: 'CED-SQUARE INNOVATION COMPANY LIMITED',
-    context: 'Thailand · Part-time',
-    detail: 'Develop WheelSense across embedded firmware, mobile applications, backend services and intelligent-care workflows. CED-SQUARE is an engineering company, separate from the university research appointment.',
-  },
-  {
-    period: 'AUG 2025 — PRESENT',
-    role: 'Research Assistant',
-    company: 'Thammasat University · Center of Excellence in Creative Engineering Design and Development',
-    context: 'Pathum Thani, Thailand',
-    detail: 'Build connected sensing hardware and server infrastructure for applied research in indoor localization, care environments and AI-enabled assistive systems.',
-  },
-  {
-    period: 'JUN — SEP 2026',
-    role: 'Teaching Assistant',
-    company: 'Thammasat University · Faculty of Engineering',
-    context: 'Pathum Thani, Thailand',
-    detail: 'Supported engineering teaching and learning in parallel with research and development work.',
-  },
-  {
-    period: 'JUN — JUL 2025',
-    role: 'Automation Engineering Intern',
-    company: 'Charoen Pokphand Group · CP CIXI Park',
-    context: 'Cixi, Zhejiang, China',
-    detail: 'Worked in an international industrial automation environment and received a Special Contribution Award for the internship.',
-  },
-]
-
-const awards: Award[] = [
-  {
-    year: 'NOV 2026',
-    category: 'International',
-    title: 'InnoServe Awards 2026',
-    recognition: '3rd Place · International Exchange (English)',
-    organization: 'International ICT Innovative Services Awards',
-    location: 'Taipei, Taiwan',
-    evidence: 'https://innoserveawards.tca.org.tw/award.aspx',
-  },
-  {
-    year: 'OCT 2026',
-    category: 'Academic',
-    title: 'Quality Youth of the Year 2026',
-    recognition: 'National youth recognition',
-    organization: 'Foundation of Science and Technology Council of Thailand',
-    location: 'Thailand',
-  },
-  {
-    year: 'OCT 2026',
-    category: 'International',
-    title: 'ITEC ASEAN 2026',
-    recognition: 'Top 20 Semi-Finalist',
-    organization: 'Chaoyang International Talent Entrepreneurship Conference — ASEAN',
-    location: 'Thailand',
-  },
-  {
-    year: 'AUG 2026',
-    category: 'National',
-    title: 'TESAIoT Secure Edge AI Service Robotics Hackathon',
-    recognition: '1st Place — Team EaseAI',
-    organization: 'Thai Embedded Systems Association and Maker Association of Thailand',
-    location: 'Thailand',
-  },
-  {
-    year: 'JUN 2026',
-    category: 'International',
-    title: '9th China (Shanghai) International Invention & Innovation Expo',
-    recognition: 'Gold Medal & Special Award',
-    organization: 'China-South Asia Innovation Forum',
-    location: 'China',
-  },
-  {
-    year: 'MAY 2026',
-    category: 'International',
-    title: 'AI Ready ASEAN Youth Challenge',
-    recognition: 'Thailand National Winner · Singapore regional showcase',
-    organization: 'ASEAN Foundation / AI Singapore',
-    location: 'Singapore',
-  },
-  {
-    year: 'MAY 2026',
-    category: 'Research',
-    title: 'ECTI-CON 2026',
-    recognition: 'Best Paper Award · First Author',
-    organization: 'International Conference on Electrical Engineering / Electronics',
-    location: 'Thailand',
-    evidence: 'https://ieeexplore.ieee.org/document/11608653',
-  },
-  {
-    year: 'APR 2026',
-    category: 'International',
-    title: 'Best AI Awards — AI Student Division',
-    recognition: 'Honorable Award',
-    organization: 'Department of Industrial Technology, MOEA',
-    location: 'Taiwan',
-    evidence: '/certificates/ai-awards-english-supporting-documents.pdf',
-  },
-  {
-    year: 'JAN 2026',
-    category: 'National',
-    title: 'Thailand New Gen Inventors Award',
-    recognition: 'Grand Prize, Gold Medal & Popular Vote',
-    organization: 'National Research Council of Thailand',
-    location: 'Thailand',
-    evidence: '/certificates/wheelsense-inewgen-award-2026-medal.pdf',
-  },
-  {
-    year: 'JAN 2026',
-    category: 'International',
-    title: 'IPITEx 2026',
-    recognition: 'Gold Medal',
-    organization: 'National Research Council of Thailand',
-    location: 'Thailand',
-    evidence: '/certificates/ipitex2026-gold-wheelchair-motion.pdf',
-  },
-  {
-    year: 'NOV 2025',
-    category: 'National',
-    title: 'TESA Top Gun Rally',
-    recognition: '4th Place Nationwide',
-    organization: 'Thai Embedded Systems Association',
-    location: 'Thailand',
-    evidence: '/certificates/embedded-system-tesa-rally-2025.pdf',
-  },
-  {
-    year: 'AUG 2025',
-    category: 'National',
-    title: 'LabVIEW Battle Thailand',
-    recognition: 'Champion',
-    organization: 'TECHSQUARE CO., LTD.',
-    location: 'Thailand',
-    evidence: '/certificates/labview-battle-thailand-2025-winner.pdf',
-  },
-]
-
-const documents = [
-  {
-    title: 'Thailand New Gen Inventors Award',
-    description: 'Grand Prize and national award evidence · 2026',
-    image: '/certificate-thumbs/wheelsense-inewgen-award-2026-medal.jpg',
-    href: '/certificates/wheelsense-inewgen-award-2026-medal.pdf',
-  },
-  {
-    title: 'Best AI Awards — Taiwan',
-    description: 'International award supporting documents · 2026',
-    image: '/certificate-thumbs/ai-awards-english-supporting-documents.jpg',
-    href: '/certificates/ai-awards-english-supporting-documents.pdf',
-  },
-  {
-    title: 'IPITEx 2026',
-    description: 'Gold Medal certificate · 2026',
-    image: '/certificate-thumbs/ipitex2026-gold-wheelchair-motion.jpg',
-    href: '/certificates/ipitex2026-gold-wheelchair-motion.pdf',
-  },
-  {
-    title: 'Internship in China',
-    description: 'CP CIXI Special Contribution Award · 2025',
-    image: '/certificate-thumbs/internship-special-contribution-award-2025.jpg',
-    href: '/certificates/internship-special-contribution-award-2025.pdf',
-  },
-]
-
-const filters: Array<AwardCategory | 'All'> = ['All', 'International', 'Research', 'National', 'Academic']
-
-function ExternalAnchor({
-  href,
-  children,
-  className = '',
-}: {
-  href: string
-  children: React.ReactNode
-  className?: string
-}) {
-  return (
-    <a className={className} href={href} target="_blank" rel="noopener noreferrer">
-      {children}
-      <ArrowUpRight size={16} strokeWidth={1.7} aria-hidden="true" />
-    </a>
-  )
+function Story() {
+  const [active, setActive] = useState(0)
+  const section = useRef<HTMLElement>(null)
+  const stage = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    const articles = Array.from(section.current?.querySelectorAll<HTMLElement>('[data-chapter]') ?? [])
+    let frame = 0
+    let current = -1
+    function refresh() {
+      frame = 0
+      const vh = window.innerHeight
+      const guide = vh * .55
+      let index = 0
+      let nearestDistance = Infinity
+      for (const [i, item] of articles.entries()) {
+        const box = item.getBoundingClientRect()
+        const distance = Math.abs(box.top + box.height / 2 - guide)
+        if (distance < nearestDistance) { nearestDistance = distance; index = i }
+      }
+      if (current !== index) { current = index; setActive(index) }
+      const first = articles[0]?.getBoundingClientRect()
+      const last = articles[articles.length - 1]?.getBoundingClientRect()
+      if (first && last) {
+        const start = first.top + first.height / 2
+        const span = last.top + last.height / 2 - start
+        stage.current?.style.setProperty('--story-progress', String(span > 0 ? Math.max(0, Math.min(1, (guide - start) / span)) : 0))
+      }
+    }
+    function queue() { if (!frame) frame = requestAnimationFrame(refresh) }
+    queue()
+    window.addEventListener('scroll', queue, { passive: true })
+    window.addEventListener('resize', queue)
+    return () => { cancelAnimationFrame(frame); window.removeEventListener('scroll', queue); window.removeEventListener('resize', queue) }
+  }, [])
+  return <section className="story" id="journey" ref={section} aria-labelledby="story-title">
+    <div className="wrap">
+      <div className="section-head">
+        <div><p className="tag"><i /> 01 / THE JOURNEY</p><h2 id="story-title">One competition<br /> at a <em>time.</em></h2></div>
+        <p>Five turning points, from the first LabVIEW final to seeing a team of junior students take our project forward.</p>
+      </div>
+      <div className="story-layout">
+        <div className="story-stage" ref={stage}>
+          <div className="stage-frame">
+            <div className="stage-images" aria-hidden="true">
+              {chapters.map((chapter, i) => <div className={'stage-image ' + (i === active ? 'active' : '')} key={chapter.label}>
+                <PhotoImage photo={chapter.photo} />
+              </div>)}
+              <div className="frame-corner" />
+            </div>
+            <div className="stage-meta"><span>{chapters[active].photo.caption}</span><span>{chapters[active].photo.where}</span></div>
+          </div>
+          <div className="stage-progress"><span /></div>
+          <nav className="chapter-nav" aria-label="Journey chapter index">
+            {chapters.map((chapter, i) => <a href={'#journey-chapter-' + (i + 1)} key={chapter.label} aria-label={chapter.label} aria-current={active === i ? 'step' : undefined}>{String(i + 1).padStart(2, '0')}</a>)}
+          </nav>
+        </div>
+        <div className="chapters">
+          {chapters.map((chapter, i) => <article className="chapter" id={'journey-chapter-' + (i + 1)} data-chapter={i} key={chapter.label}>
+            <p className="tag">/{String(i + 1).padStart(2, '0')} &nbsp; {chapter.date}</p>
+            <h3>{chapter.heading}</h3>
+            <p className="chapter-copy">{chapter.copy}</p>
+            <p className="chapter-evidence">{chapter.evidence}</p>
+            <Figure photo={chapter.photo} className="chapter-photo" />
+          </article>)}
+        </div>
+      </div>
+      <div className="story-out"><JumpLink href={recap} external>Read my full competition recap on LinkedIn</JumpLink></div>
+    </div>
+  </section>
 }
 
 export default function ProfessionalPortfolio() {
   const [menuOpen, setMenuOpen] = useState(false)
-  const [activeFilter, setActiveFilter] = useState<AwardCategory | 'All'>('All')
-  const [showAllAwards, setShowAllAwards] = useState(false)
-
+  const [group, setGroup] = useState<AwardGroup>('All')
+  const [showAll, setShowAll] = useState(false)
+  const awardList = awards.filter(award => group === 'All' || award.group === group)
   useEffect(() => {
-    const dismissOnEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') setMenuOpen(false)
-    }
-    window.addEventListener('keydown', dismissOnEscape)
-    return () => window.removeEventListener('keydown', dismissOnEscape)
+    function close(e: KeyboardEvent) { if (e.key === 'Escape') setMenuOpen(false) }
+    window.addEventListener('keydown', close)
+    return () => window.removeEventListener('keydown', close)
   }, [])
-
-  const filteredAwards = awards.filter((award) => activeFilter === 'All' || award.category === activeFilter)
-  const displayedAwards = showAllAwards ? filteredAwards : filteredAwards.slice(0, 7)
-
-  return (
-    <div className="portfolio">
-      <ScrollMotion />
-      <a className="skip-link" href="#main">Skip to content</a>
-
-      <header className="site-header">
-        <div className="container header-inner">
-          <a href="#home" className="wordmark" aria-label="Worapon Sangsasri, back to top">
-            <span className="wordmark-symbol">W<span className="wordmark-period">.</span></span>
-            <span className="wordmark-identity">
-              <strong>Worapon Sangsasri</strong>
-              <small>ENGINEER & RESEARCHER</small>
-            </span>
-          </a>
-          <button
-            className="menu-toggle"
-            type="button"
-            aria-label={menuOpen ? 'Close navigation' : 'Open navigation'}
-            aria-expanded={menuOpen}
-            aria-controls="primary-navigation"
-            onClick={() => setMenuOpen(!menuOpen)}
-          >
-            {menuOpen ? <X size={22} /> : <Menu size={22} />}
-          </button>
-          <nav id="primary-navigation" className={'nav-links' + (menuOpen ? ' is-open' : '')} aria-label="Main navigation">
-            {navigation.map((item) => (
-              <a href={item.href} key={item.href} onClick={() => setMenuOpen(false)}>{item.label}</a>
-            ))}
-            <a className="nav-contact" href="#contact" onClick={() => setMenuOpen(false)}>
-              Get in touch <ArrowUpRight size={15} aria-hidden="true" />
-            </a>
-          </nav>
+  return <>
+    <a href="#main" className="skip">Skip to content</a>
+    <header className="header">
+      <div className="wrap nav-row">
+        <a className="mark" href="#home" aria-label="Worapon Sangsasri, home"><span aria-hidden="true">W<span>.</span></span><strong>Worapon<br />Sangsasri</strong></a>
+        <button className="nav-toggle" type="button" aria-label={menuOpen ? 'Close menu' : 'Open menu'} aria-expanded={menuOpen} aria-controls="page-nav" onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X /> : <Menu />}</button>
+        <nav className={'page-nav ' + (menuOpen ? 'is-open' : '')} id="page-nav" aria-label="Main navigation">
+          {nav.map(([label, href]) => <a href={href} key={href} onClick={() => setMenuOpen(false)}>{label}</a>)}
+          <a href="#contact" onClick={() => setMenuOpen(false)} className="nav-contact">Contact <ArrowUpRight size={15} aria-hidden="true" /></a>
+        </nav>
+      </div>
+      <div className="page-progress" aria-hidden="true" />
+    </header>
+    <main id="main">
+      <section className="hero wrap" id="home" aria-labelledby="title">
+        <div className="hero-intro">
+          <div className="hero-copy">
+            <p className="tag"><i /> WORAPON SANGSASRI / ENGINEERING PORTFOLIO</p>
+            <h1 id="title">From signals<br /> to <em>support.</em></h1>
+            <p className="hero-description">I’m Worapon, an Applications Engineer at TECHSQUARE. I work with LabVIEW and build embedded systems that make everyday mobility and care easier to understand.</p>
+            <div className="hero-actions"><JumpLink className="button" href="#work">Explore my work</JumpLink><JumpLink href="/cv.html" external>View my CV</JumpLink></div>
+          </div>
+          <div className="hero-motif" aria-hidden="true">
+            <svg viewBox="0 0 200 200"><circle cx="100" cy="100" r="91" /><circle cx="100" cy="100" r="65" /><circle cx="100" cy="100" r="41" /><path d="M100 4v192M4 100h192" /><path className="motif-wave" d="M13 108h32l12-18 16 32 19-52 19 62 13-36 14 12h49" /><circle className="motif-point" cx="100" cy="100" r="3" /></svg>
+            <span>13.76° N &nbsp; 100.50° E</span>
+          </div>
         </div>
-      </header>
-
-      <main id="main">
-        <section id="home" className="hero-section">
-          <div className="container hero-grid">
-            <div className="hero-content">
-              <div className="eyebrow"><span className="eyebrow-line" /> ENGINEERING · AI · ASSISTIVE TECHNOLOGY</div>
-              <h1>Intelligent systems.<br /><em>Human impact.</em></h1>
-              <p className="hero-intro">
-                I am Worapon, an electrical engineer and researcher developing embedded-AI
-                and intelligent sensing systems for mobility, independent living and care.
-              </p>
-              <div className="hero-buttons">
-                <a className="button button-dark" href="#work">Explore selected work <ArrowRight size={17} aria-hidden="true" /></a>
-                <a className="text-link" href="/cv.html" target="_blank" rel="noopener noreferrer">View academic CV <ArrowUpRight size={16} aria-hidden="true" /></a>
-              </div>
-              <div className="hero-caption">
-                <span>BASED IN BANGKOK, THAILAND</span>
-                <span>RESEARCH INTEREST · FALL 2027</span>
-              </div>
+        <Figure photo={photos.singapore} className="hero-photo" eager />
+        <div className="hero-index"><a href="#journey"><ArrowDown size={16} aria-hidden="true" /> Scroll to follow the story</a><span>Bangkok, Thailand / Work &amp; research</span></div>
+      </section>
+      <div className="proof-strip">
+        <div className="wrap">
+          <a href="#experience"><small>THE DAY JOB</small><strong>LabVIEW</strong><span>Applications Engineer · TECHSQUARE</span></a>
+          <a href="#research"><small>THE RESEARCH</small><strong>Best Paper</strong><span>ECTI-CON 2026 · First author</span></a>
+          <a href="#awards"><small>THE TEAM</small><strong>3rd Place</strong><span>InnoServe 2026 · International Exchange (English)</span></a>
+        </div>
+      </div>
+      <Story />
+      <section className="work wrap block" id="work">
+        <div className="section-head"><div><p className="tag"><i /> 02 / SELECTED WORK</p><h2>Two projects.<br /> Different <em>questions.</em></h2></div><p>Both start with a wheelchair. One asks how to support someone at home or in care. The other asks how to measure motion reliably enough for research.</p></div>
+        <div className="work-grid">
+          <article className="work-feature">
+            <Figure photo={photos.booth} className="work-photo" />
+            <div className="work-text"><p className="tag">01 / SENSING &amp; CARE</p><h3>WheelSense &amp; EaseAI</h3><p>From a home prototype for wheelchair users to demonstrable sensing and assistive workflows for care facilities.</p><JumpLink href="/wheelsense/">Read the case study</JumpLink></div>
+          </article>
+          <article className="work-feature">
+            <div className="trace" role="img" aria-label="Illustrative signal diagram showing separate left and right wheel channels, not experimental data.">
+              <span>L / R · SCHEMATIC SIGNALS</span>
+              <svg viewBox="0 0 400 170" preserveAspectRatio="xMidYMid meet" aria-hidden="true"><path className="grid-lines" d="M0 40H400M0 85H400M0 130H400M50 0V170M100 0V170M150 0V170M200 0V170M250 0V170M300 0V170M350 0V170" /><path className="trace-a" d="M0 91C24 92 24 43 50 43s22 46 50 46 20-57 50-57 22 63 50 63 28-52 51-52 20 39 49 39 26-62 50-62 30 56 50 56" /><path className="trace-b" d="M0 123c24 0 28-34 52-34s30 40 48 40 27-26 52-26 22 38 48 38 24-58 49-58 20 33 50 33 22-23 48-23 32 28 53 28" /></svg>
+              <small>ILLUSTRATION / NOT MEASURED DATA</small>
             </div>
-            <div className="hero-visual">
-              <div className="portrait-stage">
-                <div className="portrait-accent" aria-hidden="true">01 / PROFILE</div>
-                <img
-                  className="portrait-image"
-                  src="https://avatars.githubusercontent.com/u/105480619?v=4&size=720"
-                  alt="Portrait of Worapon Sangsasri"
-                  loading="eager"
-                />
-                <div className="portrait-legend">
-                  <span>WORAPON SANGSASRI</span>
-                  <span>ENGINEERING RESEARCH</span>
-                </div>
-              </div>
-              <div className="portrait-aside">
-                <span className="aside-line" />
-                <p>From research prototypes to working systems, with international competition experience.</p>
-              </div>
-            </div>
-          </div>
-          <div className="container">
-            <a className="scroll-prompt" href="#recognition">SELECTED RECOGNITION <ArrowDown size={15} aria-hidden="true" /></a>
-          </div>
-        </section>
-
-        <section className="proof-strip" aria-label="Selected academic and research achievements">
-          <div className="container proof-grid">
-            <div><span className="proof-label">ACADEMIC FOUNDATION</span><strong><span data-gpa-counter>3.72</span> <small>/ 4.00</small></strong><p>B.Eng. Electrical Engineering · Thammasat University</p></div>
-            <div><span className="proof-label">PEER-REVIEWED RESEARCH</span><strong>Best Paper</strong><p>ECTI-CON 2026 · First author</p></div>
-            <div><span className="proof-label">INTERNATIONAL RECOGNITION</span><strong>Gold Medal</strong><p>Shanghai International Invention & Innovation Expo 2026</p></div>
-          </div>
-        </section>
-
-        <section className="section recognition-section" id="recognition">
-          <div className="container">
-            <div className="section-top"><span className="section-index">01 / SELECTED RECOGNITION</span><span>CHINA · SINGAPORE · TAIWAN</span></div>
-            <div className="section-heading-row motion-reveal">
-              <h2>Recognized beyond<br /><em>the laboratory.</em></h2>
-              <p>My work has been evaluated in international research, invention and innovation settings, with an emphasis on practical outcomes.</p>
-            </div>
-            <div className="recognition-grid">
-              {highlights.map((entry, index) => (
-                <article className="recognition-card motion-reveal" key={entry.locale}>
-                  <div className="recognition-top"><span>{entry.locale}</span><span>0{index + 1}</span></div>
-                  <div className="recognition-body"><h3>{entry.headline}</h3><p className="recognition-title">{entry.title}</p><p className="recognition-description">{entry.description}</p></div>
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section className="section about-section" id="about">
-          <div className="container about-grid">
-            <div className="section-aside">
-              <span className="section-index">02 / ABOUT</span>
-              <div className="small-rule" />
-              <p>ENGINEER<br />RESEARCHER<br />PROBLEM SOLVER</p>
-            </div>
-            <div className="about-content motion-reveal">
-              <h2>I work where sensing, intelligence and real-world needs meet.</h2>
-              <p className="lead-paragraph">
-                My background spans electrical engineering, embedded systems, machine learning
-                and applied software development. I focus on technology that can move beyond
-                a technical demonstration and become genuinely useful to people.
-              </p>
-              <p>
-                Following my B.Eng. at Thammasat University, I now work as an Applications Engineer
-                at TECHSQUARE and as an R&D Engineer with CED-SQUARE INNOVATION.
-                I have also worked as both a Research Assistant and a Teaching Assistant at the university,
-                and completed an industrial automation internship in Zhejiang, China.
-              </p>
-              <div className="expertise-grid">
-                <div><strong>01</strong><h3>Intelligent sensing</h3><p>Wearables, BLE/RSSI and indoor localization for human-centered applications.</p></div>
-                <div><strong>02</strong><h3>Embedded & edge AI</h3><p>On-device intelligence, sensor integration and applied machine learning.</p></div>
-                <div><strong>03</strong><h3>Assistive robotics</h3><p>Adaptive care workflows, accessible interfaces and intelligent control systems.</p></div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <ScrollJourney />
-
-        <section className="section work-section" id="work">
-          <div className="container">
-            <div className="section-top"><span className="section-index">04 / SELECTED WORK</span><span>APPLIED ENGINEERING & RESEARCH</span></div>
-            <div className="section-heading-row motion-reveal">
-              <h2>Built to be used,<br /><em>not just presented.</em></h2>
-              <p>From wearable hardware and firmware to AI models, dashboards and care-system integration.</p>
-            </div>
-            <article className="case-study motion-reveal">
-              <div className="case-copy">
-                <span className="case-number">01 / FLAGSHIP PROJECT</span>
-                <span className="case-line" />
-                <h3>WheelSense</h3>
-                <p className="case-subhead">AI-enabled assistive care & mobility intelligence</p>
-                <p className="case-description">
-                  An integrated prototype for wheelchair users, older adults and care teams.
-                  WheelSense combines motion sensing, BLE-based localization, intelligent
-                  monitoring and smart-environment interaction in one system.
-                </p>
-                <ul className="case-list">
-                  <li>BLE-enabled wearables and indoor sensing infrastructure</li>
-                  <li>Backend telemetry, caregiver-facing interfaces and alerts</li>
-                  <li>Intelligent assistance and smart-environment integrations</li>
-                </ul>
-                <a className="inline-action" href="/wheelsense/">Read the case study <ArrowRight size={16} aria-hidden="true" /></a>
-              </div>
-              <div className="case-art" aria-label="Conceptual system diagram for WheelSense">
-                <div className="art-title"><span>WHEELSENSE / SYSTEM ARCHITECTURE</span><span>RESEARCH PROTOTYPE</span></div>
-                <div className="architecture">
-                  <div className="architecture-item"><span className="arch-index">01</span><strong>SENSE</strong><small>Wearables · BLE · IoT</small></div>
-                  <div className="arch-join" aria-hidden="true"><span /></div>
-                  <div className="architecture-item arch-emphasis"><span className="arch-index">02</span><strong>INTERPRET</strong><small>Localization · Edge AI</small></div>
-                  <div className="arch-join" aria-hidden="true"><span /></div>
-                  <div className="architecture-item"><span className="arch-index">03</span><strong>SUPPORT</strong><small>Care workflows · Control</small></div>
-                </div>
-                <div className="art-footer"><span>EMBEDDED SYSTEMS</span><span>APPLIED AI</span><span>HUMAN-CENTERED DESIGN</span></div>
-              </div>
-            </article>
-            <div className="projects-grid">
-              {projects.map((project) => (
-                <article className="project-tile motion-reveal" key={project.name}>
-                  <div className="project-tile-top"><span>{project.number} / {project.area}</span><ArrowUpRight size={19} aria-hidden="true" /></div>
-                  <div className="project-tile-body">
-                    <h3>{project.name}</h3>
-                    <p>{project.body}</p>
-                    <div className="project-tags">{project.tags.map((tag) => <span key={tag}>{tag}</span>)}</div>
-                  </div>
-                  {project.link.startsWith('/') ? (
-                    <a href={project.link} className="project-footer-link">{project.linkText}<ArrowRight size={16} aria-hidden="true" /></a>
-                  ) : (
-                    <ExternalAnchor href={project.link} className="project-footer-link">{project.linkText}</ExternalAnchor>
-                  )}
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section className="section research-section" id="research">
-          <div className="container research-grid">
-            <div className="research-label"><span className="section-index light">05 / RESEARCH</span><BookOpenText size={48} strokeWidth={1.2} aria-hidden="true" /></div>
-            <div className="research-content motion-reveal">
-              <p className="research-caption">FIRST-AUTHOR PUBLICATION · BEST PAPER AWARD</p>
-              <h2>Comparative Performance Evaluation of BLE-Based Indoor Motion Tracking Using Machine Learning and Large Language Models</h2>
-              <p>
-                ECTI-CON 2026. Experimental comparison of machine-learning and LLM approaches
-                to BLE-based indoor tracking using ESP32-S3 anchors and a wearable tag, with attention
-                to trajectories, boundary transitions and noisy conditions.
-              </p>
-              <div className="research-meta"><span>2026 · PEER-REVIEWED CONFERENCE</span><span>FIRST AUTHOR · BEST PAPER</span></div>
-              <ExternalAnchor className="research-link" href="https://ieeexplore.ieee.org/document/11608653">Read on IEEE Xplore</ExternalAnchor>
-            </div>
-          </div>
-        </section>
-
-        <section className="section experience-section" id="experience">
-          <div className="container">
-            <div className="section-top"><span className="section-index">06 / EXPERIENCE</span><span>INDUSTRY & ACADEMIA</span></div>
-            <div className="section-heading-row motion-reveal">
-              <h2>Engineering across<br /><em>different environments.</em></h2>
-              <p>Selected roles that shaped how I research, build and communicate engineering systems.</p>
-            </div>
-            <div className="experience-list">
-              <span className="experience-rail" aria-hidden="true"><span className="experience-rail-fill" /></span>
-              {experience.map((entry, index) => (
-                <article className="experience-row motion-reveal" key={entry.role + entry.company}>
-                  <div className="experience-side"><span>{entry.period}</span><span className="experience-number">{String(index + 1).padStart(2, '0')}</span></div>
-                  <div className="experience-main"><h3>{entry.role}</h3><p className="experience-company">{entry.company}</p><p className="experience-description">{entry.detail}</p></div>
-                  <div className="experience-context">{entry.context}</div>
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section className="section awards-section" id="awards">
-          <div className="container">
-            <div className="section-top"><span className="section-index">07 / AWARDS & HONORS</span><span>2025 — 2026</span></div>
-            <div className="section-heading-row motion-reveal">
-              <h2>Selected honors,<br /><em>documented results.</em></h2>
-              <p>A record of recognition from research, international innovation, embedded systems and engineering competitions.</p>
-            </div>
-            <div className="award-toolbar" aria-label="Filter awards by category">
-              {filters.map((filter) => (
-                <button type="button" key={filter} aria-pressed={filter === activeFilter}
-                  className={'award-filter' + (filter === activeFilter ? ' selected' : '')}
-                  onClick={() => { setActiveFilter(filter); setShowAllAwards(false) }}>
-                  {filter}
-                </button>
-              ))}
-            </div>
-            <div className="award-list motion-reveal">
-              {displayedAwards.map((award) => (
-                <article className="award-row" key={activeFilter + (showAllAwards ? "-all-" : "-short-") + award.title}>
-                  <span className="award-year">{award.year}</span>
-                  <div className="award-text"><h3>{award.title}</h3><p>{award.organization} · {award.location}</p></div>
-                  <div className="award-outcome"><strong>{award.recognition}</strong><span>{award.category}</span></div>
-                  {award.evidence ? <ExternalAnchor className="award-evidence" href={award.evidence}>Evidence</ExternalAnchor> : <span className="award-evidence-spacer" />}
-                </article>
-              ))}
-            </div>
-            {filteredAwards.length > 7 ? (
-              <button className="view-all-button" type="button" onClick={() => setShowAllAwards(!showAllAwards)} aria-expanded={showAllAwards}>
-                {showAllAwards ? 'Show fewer honors' : 'View all ' + filteredAwards.length + ' honors'}
-                <ArrowRight size={17} aria-hidden="true" />
-              </button>
-            ) : null}
-          </div>
-        </section>
-
-        <section className="section documents-section" id="documents">
-          <div className="container">
-            <div className="section-top"><span className="section-index">08 / DOCUMENTATION</span><span>SELECTED PUBLIC EVIDENCE</span></div>
-            <div className="section-heading-row motion-reveal">
-              <h2>Work you can<br /><em>verify.</em></h2>
-              <p>Selected award certificates and research evidence. Personal admissions records and test score reports are not displayed in this archive.</p>
-            </div>
-            <div className="documents-grid">
-              {documents.map((item) => (
-                <ExternalAnchor className="document-card motion-reveal" href={item.href} key={item.title}>
-                  <div className="document-image"><img src={item.image} alt={'Certificate preview: ' + item.title} loading="lazy" /></div>
-                  <div className="document-content"><h3>{item.title}</h3><p>{item.description}</p><span>VIEW CERTIFICATE <ExternalLink size={13} aria-hidden="true" /></span></div>
-                </ExternalAnchor>
-              ))}
-            </div>
-            <div className="document-footer">
-              <span>Academic CV</span>
-              <p>An up-to-date print-friendly academic CV is available online.</p>
-              <a href="/cv.html" target="_blank" rel="noopener noreferrer">Open CV / Save as PDF <Download size={16} aria-hidden="true" /></a>
-            </div>
-          </div>
-        </section>
-
-        <section className="contact-section" id="contact">
-          <div className="container contact-grid motion-reveal">
-            <div>
-              <span className="section-index light">09 / CONTACT</span>
-              <h2>Let's build something<br /><em>meaningful.</em></h2>
-              <p>Open to conversations about graduate research, intelligent sensing, embedded AI and assistive technology.</p>
-            </div>
-            <div className="contact-details">
-              <a href="mailto:worapon.sangs@gmail.com"><Mail size={19} aria-hidden="true" /><span>EMAIL</span><strong>worapon.sangs@gmail.com</strong><ArrowUpRight size={18} aria-hidden="true" /></a>
-              <ExternalAnchor href="https://www.linkedin.com/in/worapon-sangsasri-0371a8376/"><UsersRound size={19} aria-hidden="true" /><span>LINKEDIN</span><strong>Professional profile</strong></ExternalAnchor>
-              <ExternalAnchor href="https://github.com/NnopponS"><Code2 size={19} aria-hidden="true" /><span>GITHUB</span><strong>Code & projects</strong></ExternalAnchor>
-              <a href="/cv.html" target="_blank" rel="noopener noreferrer"><FileText size={19} aria-hidden="true" /><span>CURRICULUM VITAE</span><strong>View academic CV</strong><ArrowUpRight size={18} aria-hidden="true" /></a>
-            </div>
-          </div>
-        </section>
-      </main>
-
-      <footer className="site-footer">
-        <div className="container footer-inner">
-          <span>© 2026 WORAPON SANGSASRI</span>
-          <span>ENGINEERING · RESEARCH · HUMAN IMPACT</span>
-          <a href="#home">BACK TO TOP ↑</a>
+            <div className="work-text"><p className="tag">02 / MOTION ACQUISITION</p><h3>WheelAthlete</h3><p>Two synchronized wheel-mounted IMUs and a Windows workflow for recording, checking and exporting wheelchair motion data.</p><JumpLink href="/wheelathlete/">See how it works</JumpLink></div>
+          </article>
+        </div>
+        <div className="work-side"><JumpLink href="https://github.com/NnopponS/ReachSenseAI" external>ReachSenseAI · magnetic sensing project</JumpLink><JumpLink href={github} external>All public work on GitHub</JumpLink></div>
+      </section>
+      <section className="research block" id="research">
+        <div className="wrap research-grid">
+          <div><p className="tag"><i /> 03 / FIRST-AUTHOR RESEARCH</p><h2>What can a BLE<br /> signal <em>tell us?</em></h2><p>Indoor motion tracking with Bluetooth Low Energy can be noisy. At Thammasat’s CED2 research center, I evaluated machine-learning and language-model approaches on data from ESP32-S3 anchors and a wearable tag.</p><p className="paper-title">Comparative Performance Evaluation of BLE-Based Indoor Motion Tracking Using Machine Learning and Large Language Models</p><JumpLink href={paper} external>Read the paper on IEEE Xplore</JumpLink></div>
+          <Figure photo={photos.research} />
+        </div>
+      </section>
+      <section className="experience wrap block" id="experience">
+        <div id="about"><p className="tag"><i /> 04 / EXPERIENCE</p><h2>How I <em>work.</em></h2><p className="lede">B.Eng. in Electrical Engineering, Thammasat University · cGPA 3.72 / 4.00</p></div>
+        <div className="roles">{experience.map(([period, role, org, description]) => <article key={role}>
+          <span>{period}</span><div><h3>{role}</h3><strong>{org}</strong>{description && <p>{description}</p>}</div>
+        </article>)}</div>
+      </section>
+      <section className="awards block" id="awards">
+        <div className="wrap">
+          <div id="recognition" className="section-head"><div><p className="tag"><i /> 05 / RECOGNITION</p><h2>What the teams<br /> <em>took home.</em></h2></div><p>Competition results, research recognition and an individual scholarship. Find the evidence alongside the work where available.</p></div>
+          <div className="award-photos"><Figure photo={photos.taiwan} /><Figure photo={photos.youth} /></div>
+          <div className="filters" aria-label="Filter honors">{awardGroups.map(filter => <button key={filter} type="button" aria-pressed={filter === group} onClick={() => { setGroup(filter); setShowAll(false) }}>{filter}</button>)}</div>
+          <div className="honor-list" id="honor-list">{(showAll ? awardList : awardList.slice(0, 6)).map(({ date, title, result, proof }) => <article key={title}><span>{date}</span><div><h3>{title}</h3><p>{result}</p></div>{proof && <a href={proof} aria-label={'Source for ' + title}>Source <ArrowUpRight size={15} aria-hidden="true" /></a>}</article>)}</div>
+          {awardList.length > 6 && <button className="more" type="button" aria-expanded={showAll} aria-controls="honor-list" onClick={() => setShowAll(!showAll)}>{showAll ? 'Show fewer honors' : 'View all ' + awardList.length + ' honors'} <ArrowDown size={16} aria-hidden="true" /></button>}
+          <div id="documents" className="work-side"><JumpLink href={linkedIn + 'details/honors/'} external>View supporting photos and honors on LinkedIn</JumpLink></div>
+        </div>
+      </section>
+      <footer className="footer" id="contact">
+        <div className="wrap">
+          <p className="tag"><i /> 06 / CONTACT</p><h2>Let’s talk about<br /><em>what’s next.</em></h2>
+          <p>I’m interested in embedded AI, assistive technology, and research collaborations that start with a real problem.</p>
+          <div className="footer-links"><JumpLink href="mailto:worapon.sangs@gmail.com" external>Email</JumpLink><JumpLink href={linkedIn} external>LinkedIn</JumpLink><JumpLink href={github} external>GitHub</JumpLink><JumpLink href="/cv.html" external>CV</JumpLink></div>
+          <div className="footer-base"><span>WORAPON SANGSASRI © 2026</span><a href="#home">Back to top ↑</a></div>
         </div>
       </footer>
-    </div>
-  )
+    </main>
+  </>
 }
