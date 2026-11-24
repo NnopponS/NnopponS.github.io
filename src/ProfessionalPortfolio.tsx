@@ -4,7 +4,7 @@ import { awardGroups, awards, chapters, experience, github, linkedIn, paper, pho
 import './professional.css'
 
 type Photo = { src: string; alt: string; caption: string; where: string; width: number; height: number }
-const nav = [['Journey', '#journey'], ['Work', '#work'], ['Research', '#research'], ['Honors', '#awards']] as const
+const nav = [['Journey', '#journey'], ['Work', '#work'], ['Research', '#research'], ['Honors', '#awards'], ['Archive', '/evidence/']] as const
 const smallImages = ['singapore', 'taiwan-booth', 'innoserve']
 
 function PhotoImage({ photo, eager = false }: { photo: Photo; eager?: boolean }) {
@@ -190,7 +190,7 @@ export default function ProfessionalPortfolio() {
           <div className="filters" aria-label="Filter honors">{awardGroups.map(filter => <button key={filter} type="button" aria-pressed={filter === group} onClick={() => { setGroup(filter); setShowAll(false) }}>{filter}</button>)}</div>
           <div className="honor-list" id="honor-list">{(showAll ? awardList : awardList.slice(0, 6)).map(({ date, title, result, proof }) => <article key={title}><span>{date}</span><div><h3>{title}</h3><p>{result}</p></div>{proof && <a href={proof} aria-label={'Source for ' + title}>Source <ArrowUpRight size={15} aria-hidden="true" /></a>}</article>)}</div>
           {awardList.length > 6 && <button className="more" type="button" aria-expanded={showAll} aria-controls="honor-list" onClick={() => setShowAll(!showAll)}>{showAll ? 'Show fewer honors' : 'View all ' + awardList.length + ' honors'} <ArrowDown size={16} aria-hidden="true" /></button>}
-          <div id="documents" className="work-side"><JumpLink href={linkedIn + 'details/honors/'} external>View supporting photos and honors on LinkedIn</JumpLink></div>
+          <div id="documents" className="work-side"><JumpLink href="/evidence/">Browse photos &amp; certificates</JumpLink><JumpLink href={linkedIn + 'details/honors/'} external>View supporting photos and honors on LinkedIn</JumpLink></div>
         </div>
       </section>
       <footer className="footer" id="contact">
