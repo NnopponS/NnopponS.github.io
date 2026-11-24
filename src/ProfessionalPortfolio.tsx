@@ -76,8 +76,8 @@ const projects = [
     name: 'EaseAI — Intelligent Care',
     body: 'Edge-AI care monitoring and smart-environment workflows designed to support caregivers and wheelchair users. Built as a working multidisciplinary prototype.',
     tags: ['Edge AI', 'PSoC Edge E84', 'AIoT', 'Care workflows'],
-    link: 'https://github.com/NnopponS',
-    linkText: 'Engineering work',
+    link: '/wheelsense/#easeai',
+    linkText: 'Explore EaseAI',
   },
   {
     number: '04',
@@ -130,6 +130,15 @@ const experience = [
 
 const awards: Award[] = [
   {
+    year: 'NOV 2026',
+    category: 'International',
+    title: 'InnoServe Awards 2026',
+    recognition: '3rd Place · International Exchange (English)',
+    organization: 'International ICT Innovative Services Awards',
+    location: 'Taipei, Taiwan',
+    evidence: 'https://innoserveawards.tca.org.tw/award.aspx',
+  },
+  {
     year: 'OCT 2026',
     category: 'Academic',
     title: 'Quality Youth of the Year 2026',
@@ -144,14 +153,6 @@ const awards: Award[] = [
     recognition: 'Top 20 Semi-Finalist',
     organization: 'Chaoyang International Talent Entrepreneurship Conference — ASEAN',
     location: 'Thailand',
-  },
-  {
-    year: 'OCT 2026',
-    category: 'International',
-    title: 'InnoServe Awards 2026',
-    recognition: 'Selected international finalist · Event in November 2026',
-    organization: 'International ICT Innovative Services Awards',
-    location: 'Taiwan',
   },
   {
     year: 'AUG 2026',
@@ -454,7 +455,7 @@ export default function ProfessionalPortfolio() {
                   <li>Backend telemetry, caregiver-facing interfaces and alerts</li>
                   <li>Intelligent assistance and smart-environment integrations</li>
                 </ul>
-                <ExternalAnchor className="inline-action" href="https://wheelsense-preview.vercel.app/login">Explore project demo</ExternalAnchor>
+                <a className="inline-action" href="/wheelsense/">Read the case study <ArrowRight size={16} aria-hidden="true" /></a>
               </div>
               <div className="case-art" aria-label="Conceptual system diagram for WheelSense">
                 <div className="art-title"><span>WHEELSENSE / SYSTEM ARCHITECTURE</span><span>RESEARCH PROTOTYPE</span></div>
@@ -477,7 +478,11 @@ export default function ProfessionalPortfolio() {
                     <p>{project.body}</p>
                     <div className="project-tags">{project.tags.map((tag) => <span key={tag}>{tag}</span>)}</div>
                   </div>
-                  <ExternalAnchor href={project.link} className="project-footer-link">{project.linkText}</ExternalAnchor>
+                  {project.link.startsWith('/') ? (
+                    <a href={project.link} className="project-footer-link">{project.linkText}<ArrowRight size={16} aria-hidden="true" /></a>
+                  ) : (
+                    <ExternalAnchor href={project.link} className="project-footer-link">{project.linkText}</ExternalAnchor>
+                  )}
                 </article>
               ))}
             </div>

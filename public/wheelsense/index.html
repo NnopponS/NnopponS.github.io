@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WheelSense &amp; EaseAI | Worapon Sangsasri</title>
+  <meta name="description" content="A research prototype connecting wheelchair motion sensing, indoor localization and caregiver workflows. An engineering case study by Worapon Sangsasri.">
+  <link rel="canonical" href="https://nnoppons.github.io/wheelsense/">
+  <meta name="theme-color" content="#f7f7f4">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="WheelSense &amp; EaseAI | Engineering Case Study">
+  <meta property="og:description" content="How I helped connect wheelchair sensors, mobile and web apps, and backend telemetry in a research prototype.">
+  <meta property="og:url" content="https://nnoppons.github.io/wheelsense/">
+  <meta property="og:image" content="https://nnoppons.github.io/art/wheelsense-journey-world.png">
+  <meta property="og:image:alt" content="Conceptual illustration of a wheelchair connected to a sensor network.">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="stylesheet" href="./case-study.css">
+</head>
+<body>
+  <header class="site-header wrap">
+    <a href="/#work" class="back"><span aria-hidden="true">←</span> Portfolio</a>
+    <span class="byline">Worapon Sangsasri</span>
+  </header>
+
+  <main>
+    <section class="hero wrap" aria-labelledby="title">
+      <div>
+        <p class="label">01 / Engineering case study</p>
+        <h1 id="title">WheelSense <span>&amp; EaseAI</span></h1>
+        <p class="lead">From wheelchair motion data to information a care team can use.</p>
+        <p class="intro">WheelSense is a team-built research prototype for assistive care. It connects wheelchair and wearable sensors to mobile and web interfaces for exploring movement, indoor location, and care workflows.</p>
+        <a class="primary" href="https://github.com/NnopponS/WheelSense_Project">Explore the source <span aria-hidden="true">↗</span></a>
+      </div>
+      <figure>
+        <img src="/art/wheelsense-journey-world.png" width="1672" height="941" alt="Illustration of a wheelchair and connected sensor nodes.">
+        <figcaption>Concept illustration · not a photograph of the prototype</figcaption>
+      </figure>
+    </section>
+
+    <dl class="facts wrap">
+      <div><dt>Status</dt><dd>Research prototype</dd></div>
+      <div><dt>My contribution</dt><dd>Firmware, applications and backend integration</dd></div>
+      <div><dt>Team recognition</dt><dd>3rd place at InnoServe 2026, International Exchange (English)</dd></div>
+    </dl>
+
+    <section class="section wrap" aria-labelledby="build">
+      <p class="label">02 / System design</p>
+      <h2 id="build">What I helped build</h2>
+      <p class="measure">A stream of motion readings is only useful if it reaches the right interface with enough context. My work covered the path from the device to the application.</p>
+      <ol class="layers">
+        <li><span class="label">01 / Sense</span><h3>Embedded firmware</h3><p>I contributed to the wheelchair-device firmware. The prototype collects motion data and uses Bluetooth Low Energy (BLE) to connect sensors and support indoor localization.</p></li>
+        <li><span class="label">02 / Connect</span><h3>Telemetry and backend</h3><p>I helped connect devices and applications to the backend. MQTT carries telemetry, and the FastAPI service and PostgreSQL database make it available to the application layer.</p></li>
+        <li><span class="label">03 / Present</span><h3>Mobile and web apps</h3><p>I contributed to the application workflows. The Flutter gateway pairs with BLE sensors and forwards information to the backend, while the Next.js dashboard presents it to users by role.</p></li>
+      </ol>
+    </section>
+
+    <section class="section panel" id="easeai" aria-labelledby="ease-title">
+      <div class="wrap panel-content">
+        <p class="label">03 / Interaction layer</p>
+        <h2 id="ease-title">What EaseAI adds</h2>
+        <p class="measure">EaseAI is the assistant inside WheelSense. The web interface separates an assistant proposal from execution: a user can review and confirm a proposed action before it runs.</p>
+        <p class="measure">In May 2026, the Thailand Department of Intellectual Property recorded a software copyright registration covering the core EaseAI software architecture. This is a copyright registration, not a patent.</p>
+        <p class="note">WheelSense is a research prototype, not a clinically validated product.</p>
+      </div>
+    </section>
+
+    <section class="section wrap" aria-labelledby="evidence-title">
+      <p class="label">04 / Public evidence</p>
+      <h2 id="evidence-title">Results and research</h2>
+      <ul class="evidence">
+        <li><a href="https://innoserveawards.tca.org.tw/award.aspx"><span><strong>InnoServe Awards 2026</strong><small>Official results · 3rd place, International Exchange (English) · Team IC-06</small></span><span aria-hidden="true">↗</span></a></li>
+        <li><a href="https://ieeexplore.ieee.org/document/11608653"><span><strong>BLE-based indoor motion tracking</strong><small>Related first-author research · ECTI-CON 2026 · IEEE Xplore</small></span><span aria-hidden="true">↗</span></a></li>
+        <li><a href="https://github.com/NnopponS/WheelSense_Project"><span><strong>WheelSense source and documentation</strong><small>System architecture, firmware, backend and applications · GitHub</small></span><span aria-hidden="true">↗</span></a></li>
+      </ul>
+    </section>
+  </main>
+
+  <footer class="site-footer wrap">
+    <span>Worapon Sangsasri · Selected work</span>
+    <a href="/#work">Back to portfolio <span aria-hidden="true">↗</span></a>
+  </footer>
+</body>
+</html>
