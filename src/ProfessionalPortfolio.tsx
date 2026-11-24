@@ -11,7 +11,7 @@ function PhotoImage({ photo, eager = false }: { photo: Photo; eager?: boolean })
   const base = '/fieldnotes/' + photo.src
   return <img src={base + '.webp'}
     srcSet={smallImages.includes(photo.src) ? base + '-small.webp 640w, ' + base + '.webp ' + photo.width + 'w' : undefined}
-    sizes="(max-width: 760px) 94vw, 55vw" width={photo.width} height={photo.height}
+    sizes={eager ? '(max-width: 920px) 94vw, (max-width: 1370px) calc(100vw - 100px), 1270px' : '(max-width: 760px) 94vw, 55vw'} width={photo.width} height={photo.height}
     alt={photo.alt} loading={eager ? 'eager' : 'lazy'} fetchPriority={eager ? 'high' : undefined} decoding="async" />
 }
 
@@ -106,7 +106,14 @@ export default function ProfessionalPortfolio() {
   useEffect(() => {
     function close(e: KeyboardEvent) { if (e.key === 'Escape') setMenuOpen(false) }
     window.addEventListener('keydown', close)
-    return () => window.removeEventListener('keydown', close)
+    // An initial fragment can be resolved before React inserts the targets into the DOM.
+    const initialAnchor = window.location.hash.slice(1)
+    const frame = initialAnchor ? requestAnimationFrame(() => {
+      let id = initialAnchor
+      try { id = decodeURIComponent(id) } catch { /* Keep the literal fragment if malformed. */ }
+      document.getElementById(id)?.scrollIntoView({ behavior: 'instant', block: 'start' })
+    }) : 0
+    return () => { window.removeEventListener('keydown', close); if (frame) cancelAnimationFrame(frame) }
   }, [])
   return <>
     <a href="#main" className="skip">Skip to content</a>
@@ -121,7 +128,7 @@ export default function ProfessionalPortfolio() {
       </div>
       <div className="page-progress" aria-hidden="true" />
     </header>
-    <main id="main">
+    <main id="main" tabIndex={-1}>
       <section className="hero wrap" id="home" aria-labelledby="title">
         <div className="hero-intro">
           <div className="hero-copy">
