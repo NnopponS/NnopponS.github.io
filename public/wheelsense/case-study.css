@@ -73,3 +73,10 @@ h2 { font-size:clamp(2.6rem,6vw,5.1rem); margin:10px 0 21px }
 @media (prefers-reduced-motion:reduce) {
   html { scroll-behavior:auto }
 }
+
+.hardware-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; max-width:750px; margin-top:25px }
+.hardware-grid figure { display:flex; min-width:0; flex-direction:column; padding:10px; background:#f9f8ef; border:1px solid #cdd5c7; border-radius:13px }
+.hardware-grid img { width:100%; height:clamp(158px,28vw,265px); object-fit:contain; border-radius:8px; background:#f0f0e6 }
+.hardware-grid a span { display:inline-block; font:.75rem var(--mono); font-weight:650; margin:9px 2px; border-bottom:1px solid currentColor }
+.hardware-grid figcaption { color:#526058; font-size:.81rem; margin:0 2px 3px }
+@media(max-width:540px) { .hardware-grid { grid-template-columns:minmax(0,1fr) } }

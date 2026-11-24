@@ -1,0 +1,53 @@
+{
+  "name": "Worapon Sangsasri",
+  "role": "Applications Engineer | Embedded Systems & Assistive Technology",
+  "location": "Bangkok, Thailand",
+  "updated": "November 2026",
+  "email": "worapon.sangs@gmail.com",
+  "site": "https://nnoppons.github.io",
+  "links": [
+    ["Portfolio", "https://nnoppons.github.io/"],
+    ["GitHub", "https://github.com/NnopponS"],
+    ["LinkedIn", "https://www.linkedin.com/in/worapon-sangsasri-0371a8376/"]
+  ],
+  "summary": "Electrical engineering graduate working across embedded sensing, firmware and software for assistive technology. I develop LabVIEW demonstrations and workshops at TECHSQUARE and contribute to WheelSense, an assistive sensing prototype. My first-author research on Bluetooth Low Energy indoor motion tracking received a Best Paper Award at ECTI-CON 2026.",
+  "education": [
+    ["B.Eng. in Electrical Engineering", "Thammasat University | GPA 3.72/4.00"],
+    ["English proficiency", "TOEIC Public Listening & Reading: 760 | 17 October 2026"]
+  ],
+  "experience": [
+    ["Applications Engineer", "TECHSQUARE CO., LTD.", "Oct 2026 - Present", "Translate customer requirements into LabVIEW demonstrations, workshops and technical documentation."],
+    ["Research & Development Engineer", "CED-SQUARE INNOVATION COMPANY LIMITED", "Apr 2026 - Present", "Contribute to WheelSense across embedded hardware, firmware, mobile interfaces and backend services."],
+    ["Research Assistant", "Center of Excellence in Creative Engineering Design and Development (CED2), Thammasat University", "Aug 2025 - Present", "Conducted BLE/RSSI sensing experiments and benchmarked machine learning and large language models for indoor motion tracking."],
+    ["Teaching Assistant", "Faculty of Engineering, Thammasat University", "Jun - Sep 2026", ""],
+    ["Automation Engineering Intern", "Charoen Pokphand Group, CP CIXI Park, Zhejiang, China", "Jun - Jul 2025", "Supported industrial automation work and received a Special Contribution Award."]
+  ],
+  "research": [
+    ["Comparative Performance Evaluation of BLE-Based Indoor Motion Tracking Using Machine Learning and Large Language Models", "W. Sangsasri et al. | ECTI-CON 2026 | First author and Best Paper Award", "IEEE Xplore", "https://ieeexplore.ieee.org/document/11608653"],
+    ["Software copyright registration: EaseAI architecture", "Motion-Tracking Sensor and Intelligent Assistant System for Elderly Care Facilities | Thailand Department of Intellectual Property, May 2026", "EaseAI field note", "https://nnoppons.github.io/wheelsense/#easeai"]
+  ],
+  "projects": [
+    ["WheelSense & EaseAI", "Assistive sensing prototype combining wearable and wheelchair motion data, BLE localization, and a user-reviewed assistant for home and care settings. Contributions span firmware, mobile work and backend integration.", "WheelSense case study", "https://nnoppons.github.io/wheelsense/"],
+    ["WheelAthlete", "Separate research tool for wheelchair motion capture, with synchronized wheel-mounted IMUs, a Windows acquisition and diagnostics interface, and CSV export for offline analysis.", "WheelAthlete case study", "https://nnoppons.github.io/wheelathlete/"]
+  ],
+  "honors": [
+    ["3rd Place, International Exchange (English)", "InnoServe Awards, Taiwan | WheelSense", "Nov 2026", "https://innoserveawards.tca.org.tw/award.aspx"],
+    ["Quality Youths Scholarship of the Year", "Foundation of Science and Technology Council of Thailand", "Oct 2026", "https://nnoppons.github.io/evidence/"],
+    ["Top 20 semifinalist", "ITEC ASEAN | WheelSense, CED-SQUARE", "Oct 2026", "https://nnoppons.github.io/evidence/#itec-top20"],
+    ["1st Place, Secure Edge AI Service Robotics Hackathon", "TESAIoT | Team EaseAI", "Aug 2026", "https://nnoppons.github.io/evidence/#tesaiot-first"],
+    ["Gold Medal & NRCT Special Award", "Shanghai International Exhibition of Inventions | WheelSense", "Jun 2026", "https://nnoppons.github.io/evidence/#shanghai-gold"],
+    ["Best Paper Award", "ECTI-CON | First-author publication", "May 2026", "https://ieeexplore.ieee.org/document/11608653"],
+    ["Thailand National Winner", "AI Ready ASEAN Youth Challenge | Represented Thailand in Singapore", "May 2026", "https://nnoppons.github.io/evidence/"],
+    ["Honorable Mention, AI Application student division", "Best AI Awards, Taiwan | EaseAI", "Apr 2026", "https://nnoppons.github.io/evidence/#best-ai-certificate"],
+    ["Gold Medal, category winner & Popular Vote", "I-New Gen Inventors Award | WheelSense, AI and Smart Devices", "2026", "https://nnoppons.github.io/evidence/#inewgen-gold"],
+    ["Gold Medal", "IPITEx | ALL Wheelchair", "2026", "https://nnoppons.github.io/evidence/#ipitex-gold"],
+    ["Innovation Pitching Merit Award", "HIC Thailand | WheelSense", "Jan 2026", "https://nnoppons.github.io/evidence/#hic-merit"],
+    ["4th Place Nationwide", "TESA Top Gun Rally | Team Witz", "Nov 2025", "https://nnoppons.github.io/evidence/#tesa-certificate"],
+    ["1st Place Nationwide", "LabVIEW Battle Thailand | Team Wizz", "Aug 2025", "https://nnoppons.github.io/evidence/#labview-certificate"]
+  ],
+  "skills": [
+    ["Sensing & embedded", "BLE/RSSI localization, wearable IMUs, ESP32-S3, C/C++"],
+    ["Software & tools", "Python, FastAPI, MQTT, PostgreSQL, React, Next.js, Flutter, MATLAB, LabVIEW"],
+    ["Research interests", "Intelligent sensing, assistive technology and applied machine learning; interested in research-oriented master's study beginning Fall 2027."]
+  ]
+}

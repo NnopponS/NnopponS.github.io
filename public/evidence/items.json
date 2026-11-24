@@ -26,6 +26,32 @@
     "origin": "Owner-supplied photo"
   },
   {
+    "id": "wheelsense-wheel-sensor",
+    "kind": "photo",
+    "title": "Wheel-mounted IMU setup",
+    "event": "WheelSense engineering notebook",
+    "year": "2026",
+    "group": "Research",
+    "summary": "An M5StickC Plus2 mounted at the wheel hub for motion and telemetry experiments. The display is masked.",
+    "src": "/evidence/media/wheelsense-wheel-sensor.webp",
+    "width": 516,
+    "height": 515,
+    "origin": "WheelSense GitHub project · cropped field photo"
+  },
+  {
+    "id": "wheelsense-reference-node",
+    "kind": "photo",
+    "title": "A reference-signal node",
+    "event": "WheelSense engineering notebook",
+    "year": "2026",
+    "group": "Research",
+    "summary": "A reference device positioned during field setup for the sensing experiments.",
+    "src": "/evidence/media/wheelsense-reference-node.webp",
+    "width": 322,
+    "height": 242,
+    "origin": "WheelSense GitHub project · cropped field photo"
+  },
+  {
     "id": "taipei-stage",
     "kind": "photo",
     "title": "With the Thailand delegation",

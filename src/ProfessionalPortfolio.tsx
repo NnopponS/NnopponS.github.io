@@ -1,17 +1,19 @@
 import { useEffect, useRef, useState } from 'react'
-import { ArrowDown, ArrowRight, ArrowUpRight, Menu, X } from 'lucide-react'
+import { ArrowDown, ArrowRight, ArrowUpRight, BookOpen, FileCheck2, FileDown, ImageIcon, Layers3, Menu, X } from 'lucide-react'
 import { awardGroups, awards, chapters, experience, github, linkedIn, paper, photos, recap, type AwardGroup } from './portfolio-content'
 import './professional.css'
+import './field-journal.css'
 
 type Photo = { src: string; alt: string; caption: string; where: string; width: number; height: number }
 const nav = [['Journey', '#journey'], ['Work', '#work'], ['Research', '#research'], ['Honors', '#awards'], ['Archive', '/evidence/']] as const
 const smallImages = ['singapore', 'taiwan-booth', 'innoserve']
+const cvFile = '/cv/Worapon-Sangsasri-CV.pdf'
 
 function PhotoImage({ photo, eager = false }: { photo: Photo; eager?: boolean }) {
   const base = '/fieldnotes/' + photo.src
   return <img src={base + '.webp'}
     srcSet={smallImages.includes(photo.src) ? base + '-small.webp 640w, ' + base + '.webp ' + photo.width + 'w' : undefined}
-    sizes={eager ? '(max-width: 920px) 94vw, (max-width: 1370px) calc(100vw - 100px), 1270px' : '(max-width: 760px) 94vw, 55vw'} width={photo.width} height={photo.height}
+    sizes="(max-width: 760px) 94vw, 52vw" width={photo.width} height={photo.height}
     alt={photo.alt} loading={eager ? 'eager' : 'lazy'} fetchPriority={eager ? 'high' : undefined} decoding="async" />
 }
 
@@ -25,6 +27,65 @@ function Figure({ photo, className = '', eager = false }: { photo: Photo; classN
 function JumpLink({ href, children, external = false, className = '' }: { href: string; children: React.ReactNode; external?: boolean; className?: string }) {
   const Icon = external ? ArrowUpRight : ArrowRight
   return <a href={href} className={'jump-link ' + className}>{children}<Icon size={17} aria-hidden="true" /></a>
+}
+
+const frames = [
+  { label: 'Field demo', photo: photos.singapore, href: '/evidence/#singapore-demo', proof: 'AI Ready ASEAN regional showcase' },
+  { label: 'Research', photo: photos.research, href: '/evidence/#ecticon-best-paper-cert', proof: 'First-author Best Paper, ECTI-CON' },
+  { label: 'Competition', photo: photos.taiwan, href: '/evidence/#taipei-award', proof: 'Third place at InnoServe, Taipei' },
+] as const
+
+function Hero() {
+  const [frame, setFrame] = useState(0)
+  const active = frames[frame]
+  return <section className="hero wrap" id="home" aria-labelledby="title">
+    <div className="hero-intro">
+      <div className="hero-copy">
+        <p className="tag hero-kicker"><i /> FIELD JOURNAL <span>/</span> BANGKOK, THAILAND</p>
+        <h1 id="title">From signals<br />to <em>support.</em></h1>
+        <p className="hero-description"><strong>I’m Worapon Sangsasri.</strong> I build sensing systems for mobility and care, and turn customer requirements into LabVIEW applications at TECHSQUARE.</p>
+        <div className="hero-actions"><JumpLink className="button" href="#work">Explore selected work</JumpLink><JumpLink href="/cv.html" external>View CV</JumpLink></div>
+        <a className="hero-resume" href={cvFile} download><FileDown size={15} aria-hidden="true" /> Download PDF</a>
+      </div>
+      <div className="viewfinder" aria-label="Selected field photographs">
+        <div className="viewfinder-bar"><span><i /> FIELD NOTES</span><span>FRAME {String(frame + 1).padStart(2, '0')} / 03</span></div>
+        <div className="viewfinder-photo" key={active.label}>
+          <PhotoImage photo={active.photo} eager={frame === 0} />
+          <div className="frame-mark" aria-hidden="true" />
+        </div>
+        <div className="viewfinder-label" aria-live="polite"><div><strong>{active.proof}</strong><span>{active.photo.where}</span></div><a href={active.href} aria-label={'See the evidence for ' + active.proof}><ArrowUpRight size={18} aria-hidden="true" /></a></div>
+        <div className="frame-controls" role="group" aria-label="Choose a field photograph">{frames.map((item, i) =>
+          <button type="button" key={item.label} aria-pressed={frame === i} onClick={() => setFrame(i)}><span>{String(i + 1).padStart(2, '0')}</span>{item.label}</button>)}
+        </div>
+      </div>
+    </div>
+    <div className="hero-index"><a href="#journey"><ArrowDown size={16} aria-hidden="true" /> Follow the work</a><span>EMBEDDED SENSING · ASSISTIVE TECHNOLOGY</span></div>
+  </section>
+}
+
+function EvidenceShelf() {
+  const items = [
+    { icon: ImageIcon, title: 'The photo archive', text: 'Documentary photos from prototypes, demonstrations, and awards.', href: '/evidence/?type=photo', label: 'Browse event photos' },
+    { icon: FileCheck2, title: 'Certificates', text: 'Award evidence with personal identifiers and verification codes trimmed where needed.', href: '/evidence/?type=certificate', label: 'Open certificate previews' },
+    { icon: BookOpen, title: 'Research record', text: 'Trace the BLE experiments back to the first-author conference paper.', href: paper, label: 'Read on IEEE Xplore' },
+  ] as const
+  const folio = [
+    { id: 'ecticon-best-paper-cert', title: 'ECTI-CON · Best Paper', width: 491, height: 347 },
+    { id: 'tesaiot-first', title: 'TESAIoT · 1st Place', width: 900, height: 636 },
+    { id: 'shanghai-gold', title: 'Shanghai · Gold Medal', width: 540, height: 800 },
+  ]
+  return <section className="evidence-shelf wrap" aria-labelledby="shelf-title">
+    <div className="shelf-title"><span className="shelf-icon" aria-hidden="true"><Layers3 size={22} /></span><div><p className="tag">THE DOCUMENTARY RECORD</p><h2 id="shelf-title">Look closer.</h2></div></div>
+    <div className="shelf-grid">{items.map(({icon: Icon,title,text,href,label}) => <article key={title}>
+      <Icon size={20} strokeWidth={1.5} aria-hidden="true" /><h3>{title}</h3><p>{text}</p><JumpLink href={href} external={href.startsWith('http')}>{label}</JumpLink>
+    </article>)}</div>
+    <div className="certificate-folio" aria-label="Selected award certificate previews">
+      {folio.map(({id,title,width,height}) => <a key={id} href={'/evidence/#' + id}>
+        <img src={'/evidence/media/' + id + '.webp'} alt={title + ' certificate preview'} loading="lazy" decoding="async" width={width} height={height} />
+        <span>{title}<ArrowUpRight size={14} aria-hidden="true" /></span>
+      </a>)}
+    </div>
+  </section>
 }
 
 function Story() {
@@ -64,7 +125,7 @@ function Story() {
   return <section className="story" id="journey" ref={section} aria-labelledby="story-title">
     <div className="wrap">
       <div className="section-head">
-        <div><p className="tag"><i /> 01 / THE JOURNEY</p><h2 id="story-title">One competition<br /> at a <em>time.</em></h2></div>
+        <div><p className="tag"><i /> 02 / THE JOURNEY</p><h2 id="story-title">One competition<br /> at a <em>time.</em></h2></div>
         <p>Five turning points, from the first LabVIEW final to seeing a team of junior students take our project forward.</p>
       </div>
       <div className="story-layout">
@@ -129,22 +190,7 @@ export default function ProfessionalPortfolio() {
       <div className="page-progress" aria-hidden="true" />
     </header>
     <main id="main" tabIndex={-1}>
-      <section className="hero wrap" id="home" aria-labelledby="title">
-        <div className="hero-intro">
-          <div className="hero-copy">
-            <p className="tag"><i /> WORAPON SANGSASRI / ENGINEERING PORTFOLIO</p>
-            <h1 id="title">From signals<br /> to <em>support.</em></h1>
-            <p className="hero-description">I’m Worapon, an Applications Engineer at TECHSQUARE. I work with LabVIEW and build embedded systems that make everyday mobility and care easier to understand.</p>
-            <div className="hero-actions"><JumpLink className="button" href="#work">Explore my work</JumpLink><JumpLink href="/cv.html" external>View my CV</JumpLink></div>
-          </div>
-          <div className="hero-motif" aria-hidden="true">
-            <svg viewBox="0 0 200 200"><circle cx="100" cy="100" r="91" /><circle cx="100" cy="100" r="65" /><circle cx="100" cy="100" r="41" /><path d="M100 4v192M4 100h192" /><path className="motif-wave" d="M13 108h32l12-18 16 32 19-52 19 62 13-36 14 12h49" /><circle className="motif-point" cx="100" cy="100" r="3" /></svg>
-            <span>13.76° N &nbsp; 100.50° E</span>
-          </div>
-        </div>
-        <Figure photo={photos.singapore} className="hero-photo" eager />
-        <div className="hero-index"><a href="#journey"><ArrowDown size={16} aria-hidden="true" /> Scroll to follow the story</a><span>Bangkok, Thailand / Work &amp; research</span></div>
-      </section>
+      <Hero />
       <div className="proof-strip">
         <div className="wrap">
           <a href="#experience"><small>THE DAY JOB</small><strong>LabVIEW</strong><span>Applications Engineer · TECHSQUARE</span></a>
@@ -152,9 +198,8 @@ export default function ProfessionalPortfolio() {
           <a href="#awards"><small>THE TEAM</small><strong>3rd Place</strong><span>InnoServe 2026 · International Exchange (English)</span></a>
         </div>
       </div>
-      <Story />
       <section className="work wrap block" id="work">
-        <div className="section-head"><div><p className="tag"><i /> 02 / SELECTED WORK</p><h2>Two projects.<br /> Different <em>questions.</em></h2></div><p>Both start with a wheelchair. One asks how to support someone at home or in care. The other asks how to measure motion reliably enough for research.</p></div>
+        <div className="section-head"><div><p className="tag"><i /> 01 / SELECTED WORK</p><h2>Two projects.<br /> Different <em>questions.</em></h2></div><p>Both start with a wheelchair. One asks how to support someone at home or in care. The other asks how to measure motion reliably enough for research.</p></div>
         <div className="work-grid">
           <article className="work-feature">
             <Figure photo={photos.booth} className="work-photo" />
@@ -171,6 +216,7 @@ export default function ProfessionalPortfolio() {
         </div>
         <div className="work-side"><JumpLink href="https://github.com/NnopponS/ReachSenseAI" external>ReachSenseAI · magnetic sensing project</JumpLink><JumpLink href={github} external>All public work on GitHub</JumpLink></div>
       </section>
+      <Story />
       <section className="research block" id="research">
         <div className="wrap research-grid">
           <div><p className="tag"><i /> 03 / FIRST-AUTHOR RESEARCH</p><h2>What can a BLE<br /> signal <em>tell us?</em></h2><p>Indoor motion tracking with Bluetooth Low Energy can be noisy. At Thammasat’s CED2 research center, I evaluated machine-learning and language-model approaches on data from ESP32-S3 anchors and a wearable tag.</p><p className="paper-title">Comparative Performance Evaluation of BLE-Based Indoor Motion Tracking Using Machine Learning and Large Language Models</p><JumpLink href={paper} external>Read the paper on IEEE Xplore</JumpLink></div>
@@ -193,6 +239,7 @@ export default function ProfessionalPortfolio() {
           <div id="documents" className="work-side"><JumpLink href="/evidence/">Browse photos &amp; certificates</JumpLink><JumpLink href={linkedIn + 'details/honors/'} external>View supporting photos and honors on LinkedIn</JumpLink></div>
         </div>
       </section>
+      <EvidenceShelf />
       <footer className="footer" id="contact">
         <div className="wrap">
           <p className="tag"><i /> 06 / CONTACT</p><h2>Let’s talk about<br /><em>what’s next.</em></h2>

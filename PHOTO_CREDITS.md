@@ -9,3 +9,5 @@ The field-note photos are either owner uploads or existing photos from the owner
 - **Quality Youths Scholarship presentation:** owner-supplied photograph from the awards ceremony.
 
 The line illustrations on the WheelAthlete page represent two synchronized channels. They are schematic artwork, not pictures of a device or measured results.
+
+- The WheelSense hardware thumbnails are privacy-edited documentary photographs from the public WheelSense project documentation. They omit people, contextual identifiers and the equipment display, and are not synthetic renders.

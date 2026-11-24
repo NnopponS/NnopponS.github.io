@@ -1,8 +1,8 @@
 # Worapon Sangsasri · Engineering Portfolio
 
-[Portfolio](https://nnoppons.github.io/) · [CV](https://nnoppons.github.io/cv.html) · [LinkedIn](https://www.linkedin.com/in/worapon-sangsasri-0371a8376/) · [GitHub profile](https://github.com/NnopponS)
+[Portfolio](https://nnoppons.github.io/) · [CV](https://nnoppons.github.io/cv.html) · [Download CV PDF](https://nnoppons.github.io/cv/Worapon-Sangsasri-CV.pdf) · [LinkedIn](https://www.linkedin.com/in/worapon-sangsasri-0371a8376/) · [GitHub profile](https://github.com/NnopponS)
 
-A field journal about going from my first LabVIEW competition to building assistive systems, testing BLE tracking, and sharing the work internationally. The scroll narrative uses real event photographs and also works as a straightforward sequence of text and photos on phones.
+A field journal for my work in embedded sensing and assistive technology, from the bench to competition and first-author research. The scroll narrative uses real event photographs and also works as a straightforward sequence of text and photos on phones.
 
 | Page | What’s there |
 | --- | --- |
@@ -31,3 +31,5 @@ React, TypeScript and Vite build a static site. GitHub Actions deploys the built
 - The read-only [photo credits](PHOTO_CREDITS.md) document the public / owner-supplied images used here. Keep source photos out of Git; `scripts/prepare_fieldnotes.py` makes smaller, metadata-free WebP copies from approved originals.
 
 - The Evidence archive is static HTML derived from `public/evidence/items.json`. Regenerate it with `python scripts/build_evidence.py` after editing the inventory. Use safe web-size previews, not unredacted source reports.
+
+- Regenerate both CV formats from the shared content with `python scripts/cv/build.py` (ReportLab and Liberation fonts required).
